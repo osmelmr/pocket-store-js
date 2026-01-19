@@ -1,6 +1,48 @@
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useCreateProduct } from "../hooks/useProducts";
 
+const schema = z.object({
+  name: z
+    .string()
+    .min(2, "El nombre debe tener al menos 2 caracteres")
+    .max(100, "El nombre no puede superar los 100 caracteres"),
+
+  category: z
+    .string()
+    .min(1, "Debes seleccionar una categoría"),
+
+  description: z
+    .string()
+    .max(2000, "La descripción no puede superar los 2000 caracteres")
+    .optional(),
+
+  price: z
+    .number({ invalid_type_error: "El precio debe ser un número" })
+    .min(0, "El precio no puede ser negativo"),
+
+  stock: z
+    .number({ invalid_type_error: "El stock debe ser un número" })
+    .min(0, "El stock no puede ser negativo"),
+
+  image: z
+    .any()
+    .optional(), // la imagen es opcional
+});
 
 export const ProductCreate = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(schema)
+  })
+  const { mutate } = useCreateProduct()
+  const onSubmit = async (data) => {
+    if (data.image.length < 1) {
+      delete data.image
+    }
+    console.log(data)
+    mutate(data)
+  }
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header */}
@@ -13,7 +55,7 @@ export const ProductCreate = () => {
         </p>
       </div>
 
-      <form className="bg-white rounded-lg shadow-md p-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow-md p-6">
         {/* Información Básica */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b">
@@ -31,11 +73,13 @@ export const ProductCreate = () => {
               </label>
               <input
                 type="text"
+                {...register("name")}
                 id="name"
                 name="name"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Ej: Laptop Gamer Pro"
               />
+              {errors.name && <p>{errors.name.message}</p>}
             </div>
 
             {/* Categoría */}
@@ -48,19 +92,21 @@ export const ProductCreate = () => {
               </label>
               <select
                 id="category"
+                {...register("category")}
                 name="category"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">Selecciona una categoría</option>
-                <option value="cat-electro-001">Electrónica</option>
-                <option value="cat-audio-001">Audio</option>
-                <option value="cat-wear-001">Wearables</option>
+                <option value="2478f773630f458d8d562038b6e772e9">Electrónica</option>
+                <option value="2478f773630f458d8d562038b6e772e9">Audio</option>
+                <option value="2478f773630f458d8d562038b6e772e9">Wearables</option>
                 <option value="cat-home-001">Hogar</option>
                 <option value="cat-sports-001">Deportes</option>
                 <option value="cat-fashion-001">Moda</option>
                 <option value="cat-books-001">Libros</option>
                 <option value="cat-food-001">Alimentos</option>
               </select>
+              {errors.category && <p>{errors.category.message}</p>}
             </div>
           </div>
 
@@ -73,6 +119,7 @@ export const ProductCreate = () => {
               Descripción
             </label>
             <textarea
+              {...register("description")}
               id="description"
               name="description"
               rows={4}
@@ -80,6 +127,7 @@ export const ProductCreate = () => {
               placeholder="Describe tu producto en detalle..."
             />
             <p className="mt-1 text-sm text-gray-500">0/2000 caracteres</p>
+            {errors.description && <p>{errors.description.message}</p>}
           </div>
         </div>
 
@@ -102,6 +150,7 @@ export const ProductCreate = () => {
                 <span className="absolute left-3 top-2.5 text-gray-500">$</span>
                 <input
                   type="number"
+                  {...register("price", { valueAsNumber: true })}
                   id="price"
                   name="price"
                   min="0"
@@ -109,6 +158,7 @@ export const ProductCreate = () => {
                   className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="0.00"
                 />
+                {errors.price && <p>{errors.price.message}</p>}
               </div>
             </div>
 
@@ -122,12 +172,14 @@ export const ProductCreate = () => {
               </label>
               <input
                 type="number"
+                {...register("stock", { valueAsNumber: true })}
                 id="stock"
                 name="stock"
                 min="0"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="0"
               />
+              {errors.stock && <p>{errors.stock.message}</p>}
               <p className="mt-1 text-sm text-gray-500">
                 Número de unidades disponibles
               </p>
@@ -148,9 +200,11 @@ export const ProductCreate = () => {
               </label>
               <input
                 type="file"
+                {...register("image")}
                 accept="image/*"
                 className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
+              {errors.image && <p>{errors.image.message}</p>}
               <p className="mt-1 text-sm text-gray-500">
                 Formatos: JPG, PNG, GIF. Tamaño máximo: 5MB
               </p>

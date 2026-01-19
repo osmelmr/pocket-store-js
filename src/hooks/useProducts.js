@@ -1,43 +1,47 @@
 import { productServices } from "../services/productServices";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
+// 🔹 Listar productos
 export const useProducts = () => {
     return useQuery({
         queryKey: ["products"],
-        queryFn: productServices.getProducts
-    }
-    )
-}
+        queryFn: productServices.getProducts,
+    });
+};
 
+// 🔹 Obtener un producto por id
 export const useProduct = (id) => {
     return useQuery({
-        queryKey: ["products", id],
-        queryFn: () => productServices.getProduct(id)
-    }
-    )
-}
+        queryKey: ["product", id],
+        queryFn: () => productServices.getProduct(id),
+        enabled: !!id, // evita ejecutar si id es null/undefined
+    });
+};
 
-export const useCreateProduct = (payload) => {
-    const queryClient = useQueryClient()
+// 🔹 Crear producto
+export const useCreateProduct = () => {
+    const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: () => () => productServices.createProduct(payload),
+        mutationFn: (payload) => productServices.createProduct(payload),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["products"] })
-        }
-    })
-}
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+        },
+    });
+};
 
-export const useUpdateProduct = (id, payload) => {
-    const queryClient = useQueryClient()
+// 🔹 Actualizar producto
+export const useUpdateProduct = () => {
+    const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: () => () => productServices.updateProduct(id, payload),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["products"] })
-            queryClient.invalidateQueries({ queryKey: ["product", id] })
-        }
-    })
-}
+        mutationFn: ({ id, payload }) => productServices.updateProduct(id, payload),
+        onSuccess: (_, { id }) => {
+            queryClient.invalidateQueries({ queryKey: ["products"] });
+            queryClient.invalidateQueries({ queryKey: ["product", id] });
+        },
+    });
+};
 
+// 🔹 Eliminar producto
 export const useDeleteProduct = () => {
     const queryClient = useQueryClient();
     return useMutation({

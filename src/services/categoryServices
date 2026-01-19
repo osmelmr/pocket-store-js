@@ -1,32 +1,43 @@
-const URL = "http://localhost:8000/api/v1/pocket-store/products/"
+const URL = "http://localhost:8000/api/v1/categories/"
 
 const request = async ({ url, options }) => {
     try {
         const res = await fetch(url, options)
-
         if (!res.ok) {
             throw new Error(`Error ${res.status}: ${res.statusText}`)
         }
-
         const data = await res.json()
         console.log(data)
         return data
     } catch (error) {
-        console.error("Request failed:", error)
+        console.log(error)
         return null
     }
 }
 
-const getProducts = () => {
-    return request({ url: URL })
+const getCategories = async () => {
+    const token = localStorage.getItem("access")
+    const options = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    return await request({ url: URL, options })
 }
 
-const getProduct = (id) => {
-    return request({ url: `${URL}/${id}` })
+const getCategory = async (id) => {
+    const token = localStorage.getItem("access")
+    const options = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    return await request({ url: URL + `${id}/`, options })
 }
 
-const createProduct = (payload) => {
-    console.log("hola")
+const createCategory = async (payload) => {
     const token = localStorage.getItem("access")
     const options = {
         method: "POST",
@@ -36,10 +47,10 @@ const createProduct = (payload) => {
         },
         body: JSON.stringify(payload)
     }
-    return request({ url: URL, options: options })
+    return await request({ url: URL, options })
 }
 
-const updateProduct = (id, payload) => {
+const updateCategory = async (id, payload) => {
     const token = localStorage.getItem("access")
     const options = {
         method: "PATCH",
@@ -49,10 +60,10 @@ const updateProduct = (id, payload) => {
         },
         body: JSON.stringify(payload)
     }
-    return request({ url: `${URL}/${id}`, options })
+    return await request({ url: URL + `${id}/`, options })
 }
 
-const deleteProduct = (id) => {
+const deleteCategory = async (id) => {
     const token = localStorage.getItem("access")
     const options = {
         method: "DELETE",
@@ -60,13 +71,13 @@ const deleteProduct = (id) => {
             Authorization: `Bearer ${token}`
         }
     }
-    return request({ url: `${URL}/${id}`, options })
+    return await request({ url: URL + `${id}/`, options })
 }
 
-export const productServices = {
-    getProduct,
-    getProducts,
-    createProduct,
-    updateProduct,
-    deleteProduct
+export const categoryServices = {
+    getCategories,
+    getCategory,
+    createCategory,
+    updateCategory,
+    deleteCategory
 }
