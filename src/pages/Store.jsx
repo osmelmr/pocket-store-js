@@ -1,5 +1,4 @@
 import { useProductFilters } from "../hooks/useProductFilters";
-import { Filters } from '../components/Filters';
 import { StoreProductList } from '../components/StoreProductList';
 import { StoreHeader } from '../components/StoreHeader';
 import { StoreFooter } from '../components/StoreFooter';

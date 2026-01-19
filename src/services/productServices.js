@@ -1,4 +1,4 @@
-const URL = "http://localhost:8000/api/v1/pocket-store/products/"
+const URL = "http://localhost:8000/api/v1/pocket-store/products"
 
 const request = async ({ url, options }) => {
     try {
@@ -10,6 +10,9 @@ const request = async ({ url, options }) => {
 
         const data = await res.json()
         console.log(data)
+        if (data.results) {
+            return data.results
+        }
         return data
     } catch (error) {
         console.error("Request failed:", error)
@@ -18,11 +21,23 @@ const request = async ({ url, options }) => {
 }
 
 const getProducts = () => {
-    return request({ url: URL })
+    const token = localStorage.getItem("access")
+    const options = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    return request({ url: URL, options })
 }
 
 const getProduct = (id) => {
-    return request({ url: `${URL}/${id}` })
+    const token = localStorage.getItem("access")
+    const options = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    return request({ url: `${URL}/${id}`, options })
 }
 
 const createProduct = (payload) => {
@@ -36,7 +51,7 @@ const createProduct = (payload) => {
         },
         body: JSON.stringify(payload)
     }
-    return request({ url: URL, options: options })
+    return request({ url: URL + "/", options: options })
 }
 
 const updateProduct = (id, payload) => {

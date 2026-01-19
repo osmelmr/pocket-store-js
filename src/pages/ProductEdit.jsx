@@ -1,4 +1,20 @@
+import { useParams } from "react-router";
+import { useProduct } from "../hooks/useProducts"
+import { useNavigate } from "react-router";
+
 export const ProductEdit = () => {
+  const navigate = useNavigate()
+  const { id } = useParams()
+  console.log(id)
+  const { data, isLoading, error } = useProduct("1814fcba-cd13-4ffe-b125-7f638de45d63")
+  const back = () => {
+    navigate(-1)
+  }
+
+
+
+  if (isLoading) return <div>Cargando producto...</div>;
+  if (error) return <div>Error al cargar el producto: {error.message}</div>;
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header con ID del producto */}
@@ -13,9 +29,9 @@ export const ProductEdit = () => {
             </p>
             <div className="mt-2 flex items-center text-sm text-gray-500">
               <span className="bg-gray-100 px-2 py-1 rounded mr-2">
-                ID: 550e8400...
+                ID: {data ? data.id : id}
               </span>
-              <span>Creado: 10 ene 2024</span>
+              <span>Creado: {data.created_at || "10 ene 2024"}</span>
             </div>
           </div>
           <button className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors flex items-center">
@@ -57,9 +73,9 @@ export const ProductEdit = () => {
                 type="text"
                 id="name"
                 name="name"
-                defaultValue="Smartphone Ultra"
+                defaultValue={data && `${data.name}`}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Ej: Laptop Gamer Pro"
+                placeholder={data && `${data.name}`}
               />
             </div>
 
@@ -74,7 +90,7 @@ export const ProductEdit = () => {
               <select
                 id="category"
                 name="category"
-                defaultValue="cat-electro-002"
+                defaultValue={data && `${data.category}`}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">Selecciona una categoría</option>
@@ -101,10 +117,10 @@ export const ProductEdit = () => {
             <textarea
               id="description"
               name="description"
-              defaultValue="Teléfono con cámara de 108MP y pantalla AMOLED"
+              defaultValue={data && `${data.description}`}
               rows={4}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Describe tu producto en detalle..."
+              placeholder={data && `${data.description}`}
             />
             <p className="mt-1 text-sm text-gray-500">45/2000 caracteres</p>
           </div>
@@ -131,7 +147,7 @@ export const ProductEdit = () => {
                   type="number"
                   id="price"
                   name="price"
-                  defaultValue="899.99"
+                  defaultValue={data && `${data.price}`}
                   min="0"
                   step="0.01"
                   className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -152,7 +168,7 @@ export const ProductEdit = () => {
                 type="number"
                 id="stock"
                 name="stock"
-                defaultValue="8"
+                defaultValue={data && `${data.stock}`}
                 min="0"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="0"
@@ -209,7 +225,7 @@ export const ProductEdit = () => {
                     </svg>
                   </div>
                   <span className="ml-2 text-lg font-semibold text-gray-900">
-                    4.5
+                    {data ? data.rating : 0}
                   </span>
                   <span className="ml-1 text-gray-500">/5</span>
                 </div>
@@ -254,8 +270,8 @@ export const ProductEdit = () => {
                   Vista previa:
                 </p>
                 <img
-                  src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop"
-                  alt="Smartphone Ultra"
+                  src={data ? data.image : "https://placehold.co/300x300"}
+                  alt={data && data.name}
                   className="w-48 h-48 object-cover rounded-lg border"
                 />
                 <button
@@ -301,6 +317,7 @@ export const ProductEdit = () => {
 
           <div className="flex space-x-4">
             <button
+              onClick={back}
               type="button"
               className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
             >
@@ -379,9 +396,9 @@ export const ProductEdit = () => {
                 Estado del producto:
               </p>
               <div className="text-sm text-green-700">
-                <p>• Creado: 10 ene 2024</p>
-                <p>• Categoría actual: Electrónica</p>
-                <p>• Stock actual: 8 unidades</p>
+                <p>• Creado: {data ? data.created_at : "10 ene 2024"}</p>
+                <p>• Categoría actual: {data ? data.category_name : "Cargando..."}</p>
+                <p>• Stock actual: {data ? data.stock : 0} unidades</p>
               </div>
             </div>
           </div>
