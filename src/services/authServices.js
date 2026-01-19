@@ -1,4 +1,4 @@
-const URL = "http://localhost:8000/api/v1/auth"
+const URL = "http://localhost:8000/api/v1/auth/"
 
 const request = async ({ url, options }) => {
     try {
@@ -19,15 +19,17 @@ const request = async ({ url, options }) => {
 const me = () => {
     const token = localStorage.getItem("access")
     return request({
-        url: URL + "/me", options: {
+        url: URL + "me", options: {
+            method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
             }
         }
     })
 }
 
-const login = (email, password) => {
+const login = ({ email, password }) => {
     const options = {
         method: "POST",
         headers: {

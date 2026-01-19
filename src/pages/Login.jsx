@@ -1,4 +1,15 @@
+import { useAuthContext } from "../hooks/useAuth";
+import { useNavigate } from "react-router";
+
 export const Login = () => {
+  const navigate = useNavigate()
+  const { login } = useAuthContext()
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    await login({ email: "juan@gmail.com", password: "123456" })
+    navigate("/")
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -24,7 +35,7 @@ export const Login = () => {
         </div>
 
         {/* Card del login */}
-        <div className="mt-8 bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
+        <div onSubmit={handleSubmit} className="mt-8 bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
           <form className="space-y-6">
             {/* Email */}
             <div>

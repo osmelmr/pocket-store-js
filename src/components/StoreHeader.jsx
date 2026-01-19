@@ -1,11 +1,11 @@
 import { useCart } from "../zustand/useCart"
 import { Link } from "react-router"
-import { useAuthContext } from "../hooks/useAuth" // 👈 tu custom hook para consumir AuthContext
+import { useAuthContext } from "../hooks/useAuth"
 
 export const StoreHeader = ({ changesearch, search }) => {
     const { allStock } = useCart()
-    const { user, login, logOut } = useAuthContext() // 👈 obtenemos usuario y funciones
-
+    const { user, logOut } = useAuthContext()
+    console.log(user)
     return (
         <header className="bg-white shadow-sm sticky top-0 z-10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,12 +90,12 @@ export const StoreHeader = ({ changesearch, search }) => {
                                 </button>
                             </div>
                         ) : (
-                            <button
-                                onClick={() => login({ email: "demo@demo.com", password: "1234" })}
+                            <Link
+                                to="/login"
                                 className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
                             >
                                 Login
-                            </button>
+                            </Link>
                         )}
                     </div>
                 </div>

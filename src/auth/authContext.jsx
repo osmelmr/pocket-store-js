@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
             if (access) {
                 try {
                     const user = await authServices.me()
+                    console.log(user)
                     setUser(user)
                 } catch (error) {
                     setUser(null)
@@ -24,12 +25,16 @@ export const AuthProvider = ({ children }) => {
     }, [])
     const login = async ({ password, email }) => {
         try {
-            const tokens = await authServices.login(email, password)
+            const tokens = await authServices.login({ email, password })
             if (tokens?.access) {
                 localStorage.setItem("access", tokens.access)
                 localStorage.setItem("refresh", tokens.refresh)
-                const user = await authServices.me()
-                setUser(user)
+                try {
+                    const user = await authServices.me()
+                    setUser(user)
+                } catch (error) {
+                    console.log(error)
+                }
             }
 
         } catch (error) {
