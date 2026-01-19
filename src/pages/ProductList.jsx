@@ -1,10 +1,15 @@
 import { Link } from "react-router";
-import { initialProducts } from "../mocks/mocks";
+// import { initialProducts } from "../mocks/mocks";
+import { useProductFilters } from "../hooks/useProductFilters";
+import { SearchFilter } from "../components/SearchFilter";
+import { CategoryFilter } from "../components/CategoryFilter";
+import { OrderFilter } from "../components/OrderFilter";
 
 export const ProductList = () => {
-  const products = initialProducts
+  // const products = initialProducts
+  const productFilters = useProductFilters()
   const onDelete = (id) => {
-    alert(id)
+    confirm(id)
   }
   return (
     <div className="p-6">
@@ -142,51 +147,21 @@ export const ProductList = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Buscar Productos
             </label>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Buscar por nombre o descripción..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <svg
-                className="absolute right-3 top-2.5 w-5 h-5 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </div>
+            <SearchFilter productsFilters={productFilters} />
           </div>
 
           <div className="w-full md:w-64">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Categoría
             </label>
-            <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <option value="all">Todas las categorías</option>
-              <option value="Electrónica">Electrónica</option>
-              <option value="Audio">Audio</option>
-              <option value="Wearables">Wearables</option>
-            </select>
+            <CategoryFilter productsFilters={productFilters} />
           </div>
 
           <div className="w-full md:w-64">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Ordenar por
             </label>
-            <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <option value="name">Nombre (A-Z)</option>
-              <option value="price">Precio (Menor a Mayor)</option>
-              <option value="stock">Stock (Menor a Mayor)</option>
-              <option value="rating">Rating (Mayor a Menor)</option>
-              <option value="created_at">Más Reciente</option>
-            </select>
+            <OrderFilter productsFilters={productFilters} />
           </div>
         </div>
       </div>
@@ -220,7 +195,7 @@ export const ProductList = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {/* Producto 1 */}
               {
-                products.slice(0, 5).map(p =>
+                productFilters.products.slice(0, 5).map(p =>
                   <tr key={p.id} className="hover:bg-gray-50">
                     <td className="px-3 py-4">
                       <div className="flex items-center">

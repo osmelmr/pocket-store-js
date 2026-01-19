@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useCreateProduct } from "../hooks/useProducts";
+import { useCategories } from "../hooks/useCategories";
+import { useNavigate } from "react-router";
 
 const schema = z.object({
   name: z
@@ -32,16 +34,32 @@ const schema = z.object({
 });
 
 export const ProductCreate = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(schema)
+  const navigate = useNavigate()
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    resolver: zodResolver(schema),
+    mode: onchange,
+    defaultValues: {
+      price: "",
+      stock: "",
+      description: "",
+      name: "",
+      image: []
+    }
   })
+  const { data: categories } = useCategories()
   const { mutate } = useCreateProduct()
   const onSubmit = async (data) => {
     if (data.image.length < 1) {
       delete data.image
     }
     console.log(data)
-    mutate(data)
+    try {
+      mutate(data)
+      reset()
+    } catch (error) {
+      console.log(error)
+    }
+
   }
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -76,10 +94,10 @@ export const ProductCreate = () => {
                 {...register("name")}
                 id="name"
                 name="name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                 placeholder="Ej: Laptop Gamer Pro"
               />
-              {errors.name && <p>{errors.name.message}</p>}
+              {errors.name && <p className="text-red-400">{errors.name.message}</p>}
             </div>
 
             {/* Categoría */}
@@ -94,19 +112,14 @@ export const ProductCreate = () => {
                 id="category"
                 {...register("category")}
                 name="category"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
               >
                 <option value="">Selecciona una categoría</option>
-                <option value="2478f773630f458d8d562038b6e772e9">Electrónica</option>
-                <option value="2478f773630f458d8d562038b6e772e9">Audio</option>
-                <option value="2478f773630f458d8d562038b6e772e9">Wearables</option>
-                <option value="cat-home-001">Hogar</option>
-                <option value="cat-sports-001">Deportes</option>
-                <option value="cat-fashion-001">Moda</option>
-                <option value="cat-books-001">Libros</option>
-                <option value="cat-food-001">Alimentos</option>
+
+                {categories && categories.map(c => <option key={c.id} value={`${c.id}`}>{c.name}</option>)}
+
               </select>
-              {errors.category && <p>{errors.category.message}</p>}
+              {errors.category && <p className="text-red-400">{errors.category.message}</p>}
             </div>
           </div>
 
@@ -123,11 +136,11 @@ export const ProductCreate = () => {
               id="description"
               name="description"
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
               placeholder="Describe tu producto en detalle..."
             />
             <p className="mt-1 text-sm text-gray-500">0/2000 caracteres</p>
-            {errors.description && <p>{errors.description.message}</p>}
+            {errors.description && <p className="text-red-400">{errors.description.message}</p>}
           </div>
         </div>
 
@@ -155,10 +168,10 @@ export const ProductCreate = () => {
                   name="price"
                   min="0"
                   step="0.01"
-                  className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                   placeholder="0.00"
                 />
-                {errors.price && <p>{errors.price.message}</p>}
+                {errors.price && <p className="text-red-400">{errors.price.message}</p>}
               </div>
             </div>
 
@@ -176,10 +189,10 @@ export const ProductCreate = () => {
                 id="stock"
                 name="stock"
                 min="0"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                 placeholder="0"
               />
-              {errors.stock && <p>{errors.stock.message}</p>}
+              {errors.stock && <p className="text-red-400">{errors.stock.message}</p>}
               <p className="mt-1 text-sm text-gray-500">
                 Número de unidades disponibles
               </p>
@@ -204,7 +217,7 @@ export const ProductCreate = () => {
                 accept="image/*"
                 className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
-              {errors.image && <p>{errors.image.message}</p>}
+              {errors.image && <p className="text-red-400">{errors.image.message}</p>}
               <p className="mt-1 text-sm text-gray-500">
                 Formatos: JPG, PNG, GIF. Tamaño máximo: 5MB
               </p>
@@ -238,6 +251,7 @@ export const ProductCreate = () => {
         {/* Botones de acción */}
         <div className="flex justify-end space-x-4 pt-6 border-t">
           <button
+            onClick={() => navigate(-1)}
             type="button"
             className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
           >

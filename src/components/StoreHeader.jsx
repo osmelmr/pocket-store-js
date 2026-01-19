@@ -1,8 +1,9 @@
 import { useCart } from "../zustand/useCart"
 import { Link } from "react-router"
 import { useAuthContext } from "../hooks/useAuth"
+import { SearchFilter } from "./SearchFilter"
 
-export const StoreHeader = ({ changesearch, search }) => {
+export const StoreHeader = ({ productsFilters }) => {
     const { allStock } = useCart()
     const { user, logOut } = useAuthContext()
     console.log(user)
@@ -20,28 +21,7 @@ export const StoreHeader = ({ changesearch, search }) => {
 
                     {/* Barra de búsqueda */}
                     <div className="flex-1 max-w-2xl mx-8">
-                        <div className="relative">
-                            <input
-                                onChange={changesearch}
-                                value={search}
-                                type="text"
-                                placeholder="Buscar productos..."
-                                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            />
-                            <svg
-                                className="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
-                        </div>
+                        <SearchFilter productsFilters={productsFilters} />
                     </div>
 
                     {/* Acciones */}
