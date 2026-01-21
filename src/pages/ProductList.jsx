@@ -4,15 +4,41 @@ import { useProductFilters } from "../hooks/useProductFilters";
 import { SearchFilter } from "../components/SearchFilter";
 import { CategoryFilter } from "../components/CategoryFilter";
 import { OrderFilter } from "../components/OrderFilter";
+import { ConfirmModal } from "../components/ConfirmModal";
+import { useState } from "react"
 
 export const ProductList = () => {
   // const products = initialProducts
   const productFilters = useProductFilters()
-  const onDelete = (id) => {
-    confirm(id)
+  const [showModal, setShowModal] = useState(false)
+
+  const [id, setId] = useState()
+
+  const onCancel = () => {
+    setShowModal(false)
   }
+  const onConfirm = () => {
+    setShowModal(false)
+    productFilters.setIProducts(productFilters.products.filter(p => p.id !== id))
+  }
+
+  const totalP = productFilters.products.length
+  let totalS = 0
+  productFilters.products.map(p => totalS = totalS += p.stock)
+  const agotados = productFilters.products.filter(p => p.stock < 1)
+  const totalA = agotados.length
+
+  const calcPromRate = () => {
+    let tot = 0
+    productFilters.products.map(p => tot += p.rating)
+    return (tot / productFilters.products.length).toFixed(1)
+  }
+
+  const ratingP = calcPromRate()
+
   return (
     <div className="p-6">
+      <ConfirmModal show={showModal} message={"Desea eliminar este producto?"} onCancel={onCancel} onConfirm={onConfirm} />
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -62,7 +88,7 @@ export const ProductList = () => {
             </div>
             <div>
               <p className="text-sm text-gray-600">Total Productos</p>
-              <p className="text-2xl font-bold">5</p>
+              <p className="text-2xl font-bold">{totalP}</p>
             </div>
           </div>
         </div>
@@ -86,7 +112,7 @@ export const ProductList = () => {
             </div>
             <div>
               <p className="text-sm text-gray-600">Stock Total</p>
-              <p className="text-2xl font-bold">53</p>
+              <p className="text-2xl font-bold">{totalS}</p>
             </div>
           </div>
         </div>
@@ -110,7 +136,7 @@ export const ProductList = () => {
             </div>
             <div>
               <p className="text-sm text-gray-600">Agotados</p>
-              <p className="text-2xl font-bold">1</p>
+              <p className="text-2xl font-bold">{totalA}</p>
             </div>
           </div>
         </div>
@@ -134,7 +160,7 @@ export const ProductList = () => {
             </div>
             <div>
               <p className="text-sm text-gray-600">Rating Promedio</p>
-              <p className="text-2xl font-bold">4.5/5</p>
+              <p className="text-2xl font-bold">{ratingP}/5</p>
             </div>
           </div>
         </div>
@@ -268,7 +294,7 @@ export const ProductList = () => {
                           Editar
                         </Link>
                         <button
-                          onClick={() => onDelete(p.id)}
+                          onClick={() => { setShowModal(true); setId(p.id) }}
                           className="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-2 py-1 rounded text-xs">
                           Eliminar
                         </button>

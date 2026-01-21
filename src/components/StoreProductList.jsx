@@ -17,7 +17,7 @@ export const StoreProductList = ({ products }) => {
             {/* Grid de productos */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {/* Producto 1 */}
-                {products && products.map(p => (
+                {products && products.map(p => (p.stock > 0 &&
                     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" key={p.id}>
                         <div className="relative h-48 bg-gray-100">
                             <img
@@ -53,20 +53,13 @@ export const StoreProductList = ({ products }) => {
                                     <span className="text-lg font-bold text-gray-900">
                                         ${p.price ? p.price : "NaN"}
                                     </span>
-                                    <p className="text-xs text-gray-500 mt-1">
-                                        {p.stock ?
-                                            <span className="text-green-600">
-                                                ✓ Stock ({p.stock} disponibles)
-                                            </span>
-                                            :
-                                            <span className="text-red-600">✗ Agotado</span>
-                                        }
-                                    </p>
+
                                 </div>
 
                                 <button
+                                    disabled={!p.stock}
                                     onClick={() => addToCart(p.id)}
-                                    className="px-4 py-2 rounded-lg flex items-center bg-blue-600 text-white hover:bg-blue-700">
+                                    className={`px-4 py-2 rounded-lg flex items-center text-white ${p.stock ? "hover:bg-blue-700  bg-blue-600" : "hover:bg-grey-600  bg-gray-500 "}`} >
                                     <svg
                                         className="w-4 h-4 mr-2"
                                         fill="none"
@@ -98,7 +91,7 @@ export const StoreProductList = ({ products }) => {
                                                 -
                                             </button>
                                             <button
-                                                onClick={() => addToCart(p.id)}
+                                                onClick={() => { addToCart(p.id) }}
                                                 className="w-6 h-6 flex items-center justify-center bg-green-100 text-green-600 rounded hover:bg-green-200 disabled:opacity-50"
                                             >
                                                 +

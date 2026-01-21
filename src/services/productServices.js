@@ -41,7 +41,6 @@ const getProduct = (id) => {
 }
 
 const createProduct = (payload) => {
-    console.log("hola")
     const token = localStorage.getItem("access")
     const options = {
         method: "POST",

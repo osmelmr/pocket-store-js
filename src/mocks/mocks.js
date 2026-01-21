@@ -233,7 +233,7 @@ export const initialProducts = [
         price: 89.99,
         stock: 20,
         rating: 4.4,
-        image: "https://images.unsplash.com/photo-1611703386297-01bb6d4c6dc7?w=400&h=300&fit=crop",
+        image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=300&fit=crop",
         image_public_id: "products/webcam-4k",
         created_at: "2024-02-18T13:50:00Z",
     },
@@ -415,7 +415,7 @@ export const initialProducts = [
         price: 89.99,
         stock: 32,
         rating: 4.4,
-        image: "https://images.unsplash.com/photo-1581235720706-9856d6d1e4c5?w=400&h=300&fit=crop",
+        image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400&h=300&fit=crop",
         image_public_id: "products/kit-herramientas",
         created_at: "2024-03-18T11:10:00Z",
     }

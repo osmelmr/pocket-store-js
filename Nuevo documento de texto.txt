@@ -4,9 +4,6 @@ import { z } from "zod";
 import { useCreateProduct } from "../hooks/useProducts";
 import { useCategories } from "../hooks/useCategories";
 import { useNavigate } from "react-router";
-import { categories as mockedCategories } from "../mocks/mocks"
-import { useState } from "react";
-import { Toast } from "../components/Toast";
 
 const schema = z.object({
   name: z
@@ -24,11 +21,11 @@ const schema = z.object({
     .optional(),
 
   price: z
-    .number("El precio debe ser un número")
+    .number({ invalid_type_error: "El precio debe ser un número" })
     .min(0, "El precio no puede ser negativo"),
 
   stock: z
-    .number("El stock debe ser un número")
+    .number({ invalid_type_error: "El stock debe ser un número" })
     .min(0, "El stock no puede ser negativo"),
 
   image: z
@@ -38,10 +35,9 @@ const schema = z.object({
 
 export const ProductCreate = () => {
   const navigate = useNavigate()
-  const [showToast, setShowToast] = useState(false)
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
-    mode: "all",
+    mode: onchange,
     defaultValues: {
       price: "",
       stock: "",
@@ -50,34 +46,24 @@ export const ProductCreate = () => {
       image: []
     }
   })
-  const { data } = useCategories()
-  let categories = mockedCategories
-  if (data) {
-    categories = data
-  }
+  const { data: categories } = useCategories()
   const { mutate } = useCreateProduct()
-
   const onSubmit = async (data) => {
-    setShowToast(true)
-    if (data.image.length >= 0) {
-      console.log("alojamiento de imagen no soportado aun")
+    if (data.image.length < 1) {
       delete data.image
     }
-    console.log("Datos validos del producto antes del fetch:", data)
-
-    // try {
-    //   mutate(data)
-    //   reset()
-
-    // } catch (error) {
-    //   console.log(error)
-    // }
+    console.log(data)
+    try {
+      mutate(data)
+      reset()
+    } catch (error) {
+      console.log(error)
+    }
 
   }
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header */}
-      <Toast message={"producto creado"} show={showToast} onClose={() => setShowToast(false)} />
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-800">
           Crear Nuevo Producto

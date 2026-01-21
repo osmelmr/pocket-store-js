@@ -12,7 +12,10 @@ export const CategoryFilter = ({ productsFilters }) => {
                 <option value="all">Todas las categorías</option>
                 <option value="Electrónica">Electrónicos</option>
                 <option value="Audio">Audio</option>
-                <option value="books">Libros</option>
+                <option value="Libros">Libros</option>
+                <option value="Fotografía">Fotografía</option>
+                <option value="Drones">Drones</option>
+                <option value="Deport">Deportes</option>
             </select>
         </>
     )
