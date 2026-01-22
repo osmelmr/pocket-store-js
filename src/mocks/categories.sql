@@ -1,0 +1,30 @@
+-- Insertar categorías (asociadas al usuario 2b9e0a8d-16a3-4142-ad64-5250df2d0f2e)
+INSERT INTO public.categories (id, owner, name, created_at) VALUES
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Electrónica'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Fotografía'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Audio'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Audio Profesional'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Wearables'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Deportes'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Videojuegos'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Periféricos'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Almacenamiento'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Redes'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Mobiliario'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Videoconferencia'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Accesorios'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Accesorios'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Televisores'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Hogar Inteligente'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Limpieza'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Entretenimiento'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Electrodomésticos'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Deportes'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Accesorios Deportivos'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Drones'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Libros Tecnología'),
+('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Herramientas')
+ON CONFLICT (id) DO UPDATE SET
+    owner = EXCLUDED.owner,
+    name = EXCLUDED.name,
+    created_at = EXCLUDED.created_at;

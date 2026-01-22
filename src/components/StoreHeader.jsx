@@ -2,8 +2,10 @@ import { useCart } from "../zustand/useCart"
 import { Link } from "react-router"
 import { useAuthContext } from "../hooks/useAuth"
 import { SearchFilter } from "./SearchFilter"
+import { useNavigate } from "react-router"
 
 export const StoreHeader = ({ productsFilters }) => {
+    const navigate = useNavigate()
     const { allStock } = useCart()
     const { user, logOut } = useAuthContext()
     console.log(user)
@@ -63,7 +65,7 @@ export const StoreHeader = ({ productsFilters }) => {
                                 />
                                 <span className="text-gray-700 font-medium">{user.name}</span>
                                 <button
-                                    onClick={logOut}
+                                    onClick={() => { logOut(); navigate("/login") }}
                                     className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
                                 >
                                     Logout
@@ -80,6 +82,6 @@ export const StoreHeader = ({ productsFilters }) => {
                     </div>
                 </div>
             </div>
-        </header>
+        </header >
     )
 }

@@ -1,24 +1,25 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { categoryServices } from "../services/categoryServices";
+// import { categoryServices } from "../services/categoryServices";
+import { getCategories, getCategory, updateCategory, deleteCategory, createCategory } from "../services/supabase/categories"
 
 export const useCategories = () => {
     return useQuery({
         queryKey: ["categories"],
-        queryFn: categoryServices.getCategories
+        queryFn: getCategories
     })
 }
 
 export const useCategory = (id) => {
     return useQuery({
         queryKey: ["categories", id],
-        queryFn: () => categoryServices.getCategory(id)
+        queryFn: () => getCategory(id)
     })
 }
 
 export const useCreateCategory = () => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: (payload) => categoryServices.createCategory(payload),
+        mutationFn: (payload) => createCategory(payload),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["categories"] })
         }
@@ -28,7 +29,7 @@ export const useCreateCategory = () => {
 export const useUpdateCategory = () => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: ({ id, payload }) => categoryServices.updateCategory(id, payload),
+        mutationFn: ({ id, payload }) => updateCategory(id, payload),
         onSuccess: (_, params) => {
             queryClient.invalidateQueries({ queryKey: ["categories"] })
             queryClient.invalidateQueries({ queryKey: ["categories", params.id] })
@@ -39,7 +40,7 @@ export const useUpdateCategory = () => {
 export const useDeleteCategory = () => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: (id) => categoryServices.deleteCategory(id),
+        mutationFn: (id) => deleteCategory(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["categories"] })
         }

@@ -4,10 +4,19 @@ import { StoreHeader } from '../components/StoreHeader';
 import { StoreFooter } from '../components/StoreFooter';
 import { CategoryFilter } from "../components/CategoryFilter";
 import { OrderFilter } from "../components/OrderFilter";
+import { useProducts } from "../hooks/useProducts"
 
 export const Store = () => {
-  const productsFilters = useProductFilters()
 
+  const { data, error, isLoading } = useProducts()
+  const productsFilters = useProductFilters(data)
+
+  if (error) {
+    return <div>Error</div>
+  }
+  if (isLoading) {
+    return <div>Loading</div>
+  }
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header/Navbar */}

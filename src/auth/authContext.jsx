@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
-import { authServices } from "../services/authServices"
+// import { authServices } from "../services/authServices"
+import { signIn, signOut, signUp } from "../services/supabase/auth"
+// import { getProfile } from "../services/supabase/profile"
 import { AuthContext } from "./context"
 
 
@@ -7,48 +9,49 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     useEffect(() => {
         const initUser = async () => {
-            const access = localStorage.getItem("access")
-            if (access) {
-                try {
-                    const user = await authServices.me()
-                    console.log(user)
-                    setUser(user)
-                } catch (error) {
+            try {
+                const us = localStorage.getItem("user")
+                if (us) {
+                    setUser(us)
+                } else {
                     setUser(null)
-                    console.log(error)
                 }
-            } else {
+            } catch (error) {
+                console.log(error)
                 setUser(null)
             }
         }
         initUser()
     }, [])
+
     const login = async ({ password, email }) => {
         try {
-            const tokens = await authServices.login({ email, password })
-            if (tokens?.access) {
-                localStorage.setItem("access", tokens.access)
-                localStorage.setItem("refresh", tokens.refresh)
-                try {
-                    const user = await authServices.me()
-                    setUser(user)
-                } catch (error) {
-                    console.log(error)
-                }
-            }
+            const data = await signIn({ password, email })
+            console.log(data.user)
+            setUser(data.user)
+            localStorage.setItem("user", JSON.stringify(data.user))
+        } catch (error) {
+            console.log(error)
+            throw new Error(error)
 
+        }
+    }
+    const register = async ({ password, email }) => {
+        try {
+
+            const data = signUp({ password, email })
+            setUser(data.user)
         } catch (error) {
             console.log(error)
         }
     }
     const logOut = () => {
-        localStorage.removeItem("access")
-        localStorage.removeItem("refresh")
-        setUser(null)
+        signOut()
+        localStorage.removeItem("user")
     }
 
     return (
-        <AuthContext.Provider value={{ user, login, logOut }}>
+        <AuthContext.Provider value={{ user, login, logOut, register }}>
             {children}
         </AuthContext.Provider>
     )

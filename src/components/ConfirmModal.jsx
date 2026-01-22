@@ -10,7 +10,7 @@ export const ConfirmModal = ({ show, message, onConfirm, onCancel }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    onClick={onCancel} // 👉 cerrar al tocar fuera
+                    onClick={onCancel}
                 >
                     <motion.div
                         className="bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-2xl p-6 w-96 text-center relative border border-gray-100"

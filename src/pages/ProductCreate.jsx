@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useCreateProduct } from "../hooks/useProducts";
 import { useCategories } from "../hooks/useCategories";
 import { useNavigate } from "react-router";
-import { categories as mockedCategories } from "../mocks/mocks"
+// import { categories as mockedCategories } from "../mocks/mocks"
 import { useState } from "react";
 import { Toast } from "../components/Toast";
 
@@ -51,10 +51,7 @@ export const ProductCreate = () => {
     }
   })
   const { data } = useCategories()
-  let categories = mockedCategories
-  if (data) {
-    categories = data
-  }
+
   const { mutate } = useCreateProduct()
 
   const onSubmit = async (data) => {
@@ -65,13 +62,13 @@ export const ProductCreate = () => {
     }
     console.log("Datos validos del producto antes del fetch:", data)
 
-    // try {
-    //   mutate(data)
-    //   reset()
+    try {
+      mutate(data)
+      reset()
 
-    // } catch (error) {
-    //   console.log(error)
-    // }
+    } catch (error) {
+      console.log(error)
+    }
 
   }
   return (
@@ -130,7 +127,7 @@ export const ProductCreate = () => {
               >
                 <option value="">Selecciona una categoría</option>
 
-                {categories && categories.map(c => <option key={c.id} value={`${c.id}`}>{c.name}</option>)}
+                {data && data.map(c => <option key={c.id} value={`${c.id}`}>{c.name}</option>)}
 
               </select>
               {errors.category && <p className="text-red-400">{errors.category.message}</p>}
