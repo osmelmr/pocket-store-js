@@ -1,4 +1,4 @@
-import { supabase } from '../../supabase/client'
+import { supabase } from './client'
 
 // Obtener todos los productos del usuario autenticado
 export async function getProducts() {
@@ -14,11 +14,11 @@ export async function getProducts() {
 export async function getProduct(productId) {
     const { data, error } = await supabase
         .from('products')
-        .eq("id", productId)
         .select()
+        .eq("id", productId)
         .single()
 
-    if (error) throw error
+    if (error) { console.log(error); throw error }
     return data
 }
 

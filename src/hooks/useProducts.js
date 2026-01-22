@@ -12,6 +12,7 @@ export const useProducts = () => {
 
 // 🔹 Obtener un producto por id
 export const useProduct = (id) => {
+    console.log(id)
     return useQuery({
         queryKey: ["product", id],
         queryFn: () => getProduct(id),

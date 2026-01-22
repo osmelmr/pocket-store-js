@@ -6,20 +6,28 @@ import { CategoryFilter } from "../components/CategoryFilter";
 import { OrderFilter } from "../components/OrderFilter";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { useState } from "react"
+import { useProducts, useDeleteProduct } from "../hooks/useProducts"
 
 export const ProductList = () => {
   // const products = initialProducts
-  const productFilters = useProductFilters()
+  const { data, error, isLoading } = useProducts()
+  const productFilters = useProductFilters(data)
   const [showModal, setShowModal] = useState(false)
-
+  const { mutate: deleteP } = useDeleteProduct()
   const [id, setId] = useState()
 
   const onCancel = () => {
     setShowModal(false)
   }
-  const onConfirm = () => {
+  const onConfirm = async () => {
     setShowModal(false)
-    productFilters.setIProducts(productFilters.products.filter(p => p.id !== id))
+    // productFilters.setIProducts(productFilters.products.filter(p => p.id !== id))
+    try {
+      await deleteP(id)
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const totalP = productFilters.products.length
@@ -35,7 +43,12 @@ export const ProductList = () => {
   }
 
   const ratingP = calcPromRate()
-
+  if (isLoading) {
+    return <div>Cargando...</div>
+  }
+  if (error) {
+    return <div>Error: {error}</div>
+  }
   return (
     <div className="p-6">
       <ConfirmModal show={showModal} message={"Desea eliminar este producto?"} onCancel={onCancel} onConfirm={onConfirm} />

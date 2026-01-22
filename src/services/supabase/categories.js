@@ -1,4 +1,4 @@
-import { supabase } from '../../supabase/client'
+import { supabase } from './client'
 
 // Obtener todas las categorías del usuario autenticado
 export async function getCategories() {
