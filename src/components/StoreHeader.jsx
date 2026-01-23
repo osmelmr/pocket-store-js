@@ -39,7 +39,10 @@ export const StoreHeader = ({ productsFilters }) => {
                         </button>
 
                         {/* Logo */}
-                        <Link to="/" className="flex items-center">
+                        {
+
+                        }
+                        <Link to="/" className="hidden sm:inline items-center">
                             <h1 className="text-xl md:text-2xl font-bold text-gray-800">Mi Tienda</h1>
                             <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded hidden sm:inline">
                                 Demo
