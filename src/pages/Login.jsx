@@ -79,7 +79,7 @@ export const Login = () => {
                     value={email}
                     onChange={onChange}
                     autoComplete="email"
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm text-gray-900"
                     placeholder="tu@email.com"
                   />
                 </div>
@@ -101,7 +101,7 @@ export const Login = () => {
                     value={password}
                     onChange={onChange}
                     autoComplete="current-password"
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm text-gray-900"
                     placeholder="••••••••"
                   />
                 </div>
@@ -114,7 +114,7 @@ export const Login = () => {
                     id="rememberMe"
                     name="rememberMe"
                     type="checkbox"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded "
                   />
                   <label
                     htmlFor="rememberMe"
