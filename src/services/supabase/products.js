@@ -36,6 +36,7 @@ export async function getProduct(productId) {
 
 // Crear un producto
 export async function createProduct(product) {
+    console.log(product)
     const { data, error } = await supabase
         .from('products')
         .insert([product]) // el owner lo valida RLS con auth.uid()

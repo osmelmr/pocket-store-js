@@ -63,9 +63,10 @@ export const ProductCreate = () => {
     console.log("Datos validos del producto antes del fetch:", data)
 
     try {
-      mutate(data)
+      const { data: res, error } = await mutate(data)
+      if (error) throw new Error(error)
+      if (res) console.log(res)
       reset()
-
     } catch (error) {
       console.log(error)
     }

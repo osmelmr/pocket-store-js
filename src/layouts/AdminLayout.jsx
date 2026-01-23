@@ -1,23 +1,36 @@
 import { useState } from "react";
-import { Outlet, Link } from "react-router";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuth";
 
 export const AdminLayout = () => {
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(true);
+
+    const [showDropdown, setShowDropdown] = useState(false);
+    const navigate = useNavigate();
+
+    const { user, login, logOut } = useAuthContext()
+
+    const handleLogout = () => {
+        logOut()
+        setShowDropdown(false);
+        navigate("/");
+    };
+
     return (
         <div className={`min-h-screen bg-gray-100 `}>
             {/* Sidebar */}
-            <div className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
-                <div className="p-4">
+            <div className={`fixed inset-y-0 left-0 w-64 bg-gray-800 text-white ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300`}>
+                <div className="p-4 h-full flex flex-col">
                     <div className="flex items-center justify-around mb-8">
                         <h1 className="text-2xl font-bold ">Admin Store</h1>
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="text-2xl hover:text-red-500"
+                            className="text-2xl hover:text-red-500 transition-colors"
                         >
                             ✕
                         </button>
                     </div>
-                    <nav className="space-y-2">
+                    <nav className="space-y-2 flex-1">
                         <Link
                             to="/admin"
                             className="flex items-center p-3 rounded hover:bg-gray-700 transition-colors w-full text-left">
@@ -76,53 +89,136 @@ export const AdminLayout = () => {
                         </Link>
                     </nav>
 
-                    <div className="absolute bottom-4 left-0 right-0 p-4">
-                        <button className="flex items-center w-full p-3 rounded hover:bg-gray-700 transition-colors">
-                            <svg
-                                className="w-5 h-5 mr-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                    {/* Botón de cerrar sesión en sidebar (opcional) */}
+                    <div className="mt-auto">
+                        {user && (
+                            <button
+                                onClick={handleLogout}
+                                className="flex items-center w-full p-3 rounded hover:bg-gray-700 transition-colors"
                             >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                                />
-                            </svg>
-                            Cerrar Sesión
-                        </button>
+                                <svg
+                                    className="w-5 h-5 mr-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                    />
+                                </svg>
+                                Cerrar Sesión
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
 
             {/* Main Content */}
-            <div className={`${isOpen && "ml-64"}`}>
+            <div className={`${isOpen && "ml-64"} transition-all duration-300`}>
                 {/* Top Bar */}
-                <header className="bg-white shadow-sm">
+                <header className="bg-white shadow-sm sticky top-0 z-40">
                     <div className="px-6 py-4 flex justify-between items-center">
                         <div className="flex items-center">
-                            {
-                                !isOpen &&
+                            {!isOpen && (
                                 <button
                                     onClick={() => setIsOpen(true)}
-                                    className="top-4 left-4 z-50 p-2 text-xl text-gray-800 rounded"
+                                    className="p-2 text-xl text-gray-800 rounded hover:bg-gray-100 transition-colors"
                                 >
                                     ☰
                                 </button>
-                            }
-                            <h2 className="text-lg font-semibold text-gray-800">
+                            )}
+                            <h2 className="text-lg font-semibold text-gray-800 ml-4">
                                 Panel de Administración
-                            </h2></div>
+                            </h2>
+                        </div>
+
+                        {/* Área de usuario en el header */}
                         <div className="flex items-center space-x-4">
-                            <span className="text-gray-600">Bienvenido, Admin</span>
-                            <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
+                            {user ? (
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setShowDropdown(!showDropdown)}
+                                        className="flex items-center space-x-3 focus:outline-none"
+                                    >
+                                        <span className="text-gray-600 hidden md:block">
+                                            Bienvenido, {user.name}
+                                        </span>
+                                        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300 hover:border-blue-500 transition-colors">
+                                            <img
+                                                src="https://ui-avatars.com/api/?name=Admin&background=3B82F6&color=fff&bold=true&size=128"
+                                                alt={user.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    </button>
+
+                                    {/* Dropdown de usuario */}
+                                    {showDropdown && (
+                                        <>
+                                            <div
+                                                className="fixed inset-0 z-40"
+                                                onClick={() => setShowDropdown(false)}
+                                            ></div>
+                                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
+                                                <div className="px-4 py-3 border-b border-gray-100">
+                                                    <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                                                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                                                </div>
+                                                <Link
+                                                    to="/admin/profile"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    onClick={() => setShowDropdown(false)}
+                                                >
+                                                    Mi Perfil
+                                                </Link>
+                                                <Link
+                                                    to="/admin/settings"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    onClick={() => setShowDropdown(false)}
+                                                >
+                                                    Configuración
+                                                </Link>
+                                                <button
+                                                    onClick={handleLogout}
+                                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t border-gray-100"
+                                                >
+                                                    <div className="flex items-center">
+                                                        <svg
+                                                            className="w-4 h-4 mr-2"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth={2}
+                                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                                            />
+                                                        </svg>
+                                                        Cerrar Sesión
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => login()}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                >
+                                    Iniciar Sesión
+                                </button>
+                            )}
                         </div>
                     </div>
                 </header>
 
-                {/* Page Content - Contenido de ejemplo */}
+                {/* Page Content */}
                 <main className="p-6">
                     <Outlet />
                 </main>

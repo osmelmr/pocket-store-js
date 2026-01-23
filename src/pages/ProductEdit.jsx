@@ -1,19 +1,43 @@
-import { useParams } from "react-router";
-import { useProduct } from "../hooks/useProducts"
-import { useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
+import { useProduct } from "../hooks/useProducts";
+import { useCategories } from "../hooks/useCategories";
 
 export const ProductEdit = () => {
-  const navigate = useNavigate()
-  const { id } = useParams()
-  console.log(id)
-  const { data, isLoading, error } = useProduct(id)
+  const navigate = useNavigate();
+  const { data: categories, error: categoryError, isLoading: categoriesLoading } = useCategories();
+  const { id } = useParams();
+  const { data, isLoading, error } = useProduct(id);
+
+  // Calcular la categoría inicial usando useMemo
+  // const initialCategoryId = useMemo(() => {
+  //   if (data?.category) {
+  //     console.log("aaaaa", data.category)
+  //     return String(data.category);
+  //   }
+  //   return "";
+  // }, [data]);
+
+  // Estado derivado - solución más limpia
+  const [displayCategoryId, setSelectedCategoryId] = useState("");
+  useEffect(() => {
+    if (data && data?.category) {
+      setSelectedCategoryId(data.category)
+    } else {
+      setSelectedCategoryId("")
+    }
+  }, [categories])
+
+  // Si los datos cambian y la categoría actual está vacía, usar la derivada
+  // const displayCategoryId = selectedCategoryId //|| initialCategoryId;
 
   const back = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
 
-  if (isLoading) return <div>Cargando producto...</div>;
-  if (error) return <div>Error al cargar el producto: {error.message}</div>;
+  if (isLoading || categoriesLoading) return <div>Cargando producto...</div>;
+  if (error || categoryError) return <div>Error al cargar el producto: {error?.message || categoryError?.message}</div>;
+
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header con ID del producto */}
@@ -30,7 +54,9 @@ export const ProductEdit = () => {
               <span className="bg-gray-100 px-2 py-1 rounded mr-2">
                 ID: {data ? data.id : id}
               </span>
-              {/* <span>Creado: {data.created_at || "10 ene 2024"}</span> */}
+              <span className="bg-blue-100 px-2 py-1 rounded text-xs">
+                Categoría ID: {displayCategoryId || "No seleccionada"}
+              </span>
             </div>
           </div>
           <button className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors flex items-center">
@@ -72,13 +98,13 @@ export const ProductEdit = () => {
                 type="text"
                 id="name"
                 name="name"
-                defaultValue={data && `${data.name}`}
+                defaultValue={data?.name || ""}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder={data && `${data.name}`}
+                placeholder="Nombre del producto"
               />
             </div>
 
-            {/* Categoría */}
+            {/* Categoría - COMPONENTE CONTROLADO */}
             <div>
               <label
                 htmlFor="category"
@@ -89,19 +115,23 @@ export const ProductEdit = () => {
               <select
                 id="category"
                 name="category"
-                defaultValue={data && `${data.category}`}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={displayCategoryId}
+                onChange={(e) => setSelectedCategoryId(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
               >
                 <option value="">Selecciona una categoría</option>
-                <option value="cat-electro-001">Electrónica</option>
-                <option value="cat-audio-001">Audio</option>
-                <option value="cat-wear-001">Wearables</option>
-                <option value="cat-home-001">Hogar</option>
-                <option value="cat-sports-001">Deportes</option>
-                <option value="cat-fashion-001">Moda</option>
-                <option value="cat-books-001">Libros</option>
-                <option value="cat-food-001">Alimentos</option>
+                {categories && categories.map((category) => (
+                  <option
+                    key={category.id}
+                    value={String(category.id)}
+                  >
+                    {category.name}
+                  </option>
+                ))}
               </select>
+              <p className="mt-1 text-xs text-gray-500">
+                {displayCategoryId ? `Seleccionada: ${categories?.find(c => String(c.id) === displayCategoryId)?.name || "Categoría no encontrada"}` : "No hay categoría seleccionada"}
+              </p>
             </div>
           </div>
 
@@ -116,10 +146,10 @@ export const ProductEdit = () => {
             <textarea
               id="description"
               name="description"
-              defaultValue={data && `${data.description}`}
+              defaultValue={data?.description || ""}
               rows={4}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder={data && `${data.description}`}
+              placeholder="Descripción del producto"
             />
             <p className="mt-1 text-sm text-gray-500">45/2000 caracteres</p>
           </div>
@@ -146,7 +176,7 @@ export const ProductEdit = () => {
                   type="number"
                   id="price"
                   name="price"
-                  defaultValue={data && `${data.price}`}
+                  defaultValue={data?.price || 0}
                   min="0"
                   step="0.01"
                   className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -167,7 +197,7 @@ export const ProductEdit = () => {
                 type="number"
                 id="stock"
                 name="stock"
-                defaultValue={data && `${data.stock}`}
+                defaultValue={data?.stock || 0}
                 min="0"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="0"
@@ -187,44 +217,19 @@ export const ProductEdit = () => {
                 </p>
                 <div className="flex items-center mt-1">
                   <div className="flex">
-                    <svg
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                    <svg
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                    <svg
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                    <svg
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                    <svg
-                      className="w-5 h-5 text-gray-300"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <svg
+                        key={star}
+                        className={`w-5 h-5 ${star <= (data?.rating || 0) ? 'text-yellow-400' : 'text-gray-300'}`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
                   </div>
                   <span className="ml-2 text-lg font-semibold text-gray-900">
-                    {data ? data.rating : 0}
+                    {data?.rating || 0}
                   </span>
                   <span className="ml-1 text-gray-500">/5</span>
                 </div>
@@ -269,8 +274,8 @@ export const ProductEdit = () => {
                   Vista previa:
                 </p>
                 <img
-                  src={data ? data.image : "https://placehold.co/300x300"}
-                  alt={data && data.name}
+                  src={data?.image || "https://placehold.co/300x300"}
+                  alt={data?.name}
                   className="w-48 h-48 object-cover rounded-lg border"
                 />
                 <button
@@ -296,6 +301,7 @@ export const ProductEdit = () => {
             <button
               type="button"
               className="px-4 py-2 text-gray-600 hover:text-gray-800 flex items-center"
+              onClick={back}
             >
               <svg
                 className="w-4 h-4 mr-2"
@@ -395,9 +401,13 @@ export const ProductEdit = () => {
                 Estado del producto:
               </p>
               <div className="text-sm text-green-700">
-                {/* <p>• Creado: {data ? data.created_at : "10 ene 2024"}</p> */}
-                <p>• Categoría actual: {data ? data.category_name : "Cargando..."}</p>
-                <p>• Stock actual: {data ? data.stock : 0} unidades</p>
+                {data && (
+                  <>
+                    <p>• Categoría actual: {data.category_name || "Sin categoría"}</p>
+                    <p>• Stock actual: {data.stock || 0} unidades</p>
+                    <p>• Última actualización: {data.updated_at || "N/A"}</p>
+                  </>
+                )}
               </div>
             </div>
           </div>
