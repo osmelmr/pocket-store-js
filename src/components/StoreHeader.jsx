@@ -41,28 +41,28 @@ export const StoreHeader = ({ productsFilters }) => {
                         {/* Logo */}
                         <Link to="/" className="flex items-center">
                             <h1 className="text-xl md:text-2xl font-bold text-gray-800">Mi Tienda</h1>
-                            <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded hidden md:inline">
+                            <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded hidden sm:inline">
                                 Demo
                             </span>
                         </Link>
                     </div>
 
-                    {/* Barra de búsqueda - Oculta en móviles cuando el menú está abierto */}
-                    <div className={`${showMobileMenu ? 'hidden' : 'flex'} flex-1 max-w-2xl mx-4 md:mx-8`}>
+                    {/* Barra de búsqueda - Siempre visible en desktop, oculta en móvil cuando menú abierto */}
+                    <div className={`${showMobileMenu ? 'md:flex' : 'flex'} flex-1 max-w-2xl mx-4 md:mx-8`}>
                         <SearchFilter productsFilters={productsFilters} />
                     </div>
 
-                    {/* Acciones - En móvil se mueven al menú desplegable */}
-                    <div className="hidden md:flex items-center space-x-6">
-                        {/* Panel Admin (solo si es admin) */}
+                    {/* Acciones */}
+                    <div className="flex items-center space-x-4 md:space-x-6">
+                        {/* Panel Admin - Solo visible en desktop */}
                         <Link
                             to="/admin"
-                            className="px-4 py-2 text-blue-600 hover:text-blue-800 font-medium hidden lg:block"
+                            className="hidden md:block px-4 py-2 text-blue-600 hover:text-blue-800 font-medium"
                         >
                             Panel Admin
                         </Link>
 
-                        {/* Carrito - Siempre visible */}
+                        {/* Carrito */}
                         <Link to="/cart" className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
                             <svg
                                 className="w-6 h-6 text-gray-700"
@@ -82,14 +82,14 @@ export const StoreHeader = ({ productsFilters }) => {
                             </span>
                         </Link>
 
-                        {/* Autenticación */}
+                        {/* Autenticación - Desktop */}
                         {user ? (
-                            <div className="relative">
+                            <div className="hidden md:block relative">
                                 <button
                                     onClick={() => setShowDropdown(!showDropdown)}
                                     className="flex items-center space-x-3 focus:outline-none"
                                 >
-                                    <span className="text-gray-600 hidden lg:block">
+                                    <span className="text-gray-600">
                                         Hola, {user.name}
                                     </span>
                                     <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300 hover:border-blue-500 transition-colors">
@@ -164,44 +164,48 @@ export const StoreHeader = ({ productsFilters }) => {
                         ) : (
                             <Link
                                 to="/login"
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                className="hidden md:block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                             >
                                 Iniciar Sesión
                             </Link>
                         )}
-                    </div>
 
-                    {/* Iconos de acción móviles - Solo visible en móvil */}
-                    <div className="md:hidden flex items-center space-x-4">
-                        {/* Carrito móvil */}
-                        <Link to="/cart" className="relative p-2">
-                            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                        {/* Icono de usuario en móvil */}
+                        {user && (
+                            <button
+                                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                                className="md:hidden w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300"
+                            >
+                                <img
+                                    src={user.avatar || "https://ui-avatars.com/api/?name=user&background=3B82F6&color=fff&bold=true"}
+                                    alt={user.name}
+                                    className="w-full h-full object-cover"
                                 />
-                            </svg>
-                            {allStock() > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                    {allStock()}
-                                </span>
-                            )}
-                        </Link>
+                            </button>
+                        )}
                     </div>
                 </div>
 
                 {/* Menú móvil desplegable */}
                 {showMobileMenu && (
                     <div className="md:hidden py-4 border-t border-gray-200">
-                        {/* Barra de búsqueda en menú móvil */}
-                        <div className="mb-4">
-                            <SearchFilter productsFilters={productsFilters} />
-                        </div>
-
                         {/* Opciones del menú */}
                         <div className="space-y-3">
+                            {/* Panel Admin en móvil */}
+                            <Link
+                                to="/admin"
+                                className="block px-3 py-2 rounded-md text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                                onClick={() => setShowMobileMenu(false)}
+                            >
+                                <div className="flex items-center">
+                                    <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    Panel Admin
+                                </div>
+                            </Link>
+
                             {user ? (
                                 <>
                                     <div className="flex items-center space-x-3 p-2">
@@ -244,22 +248,6 @@ export const StoreHeader = ({ productsFilters }) => {
                                         </div>
                                     </Link>
 
-                                    {user.role === 'admin' && (
-                                        <Link
-                                            to="/admin"
-                                            className="block px-3 py-2 rounded-md text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-                                            onClick={() => setShowMobileMenu(false)}
-                                        >
-                                            <div className="flex items-center">
-                                                <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                                Panel Admin
-                                            </div>
-                                        </Link>
-                                    )}
-
                                     <button
                                         onClick={() => {
                                             handleLogout()
@@ -276,22 +264,13 @@ export const StoreHeader = ({ productsFilters }) => {
                                     </button>
                                 </>
                             ) : (
-                                <>
-                                    <Link
-                                        to="/login"
-                                        className="block px-3 py-2 bg-blue-600 text-white rounded-md text-center hover:bg-blue-700"
-                                        onClick={() => setShowMobileMenu(false)}
-                                    >
-                                        Iniciar Sesión
-                                    </Link>
-                                    <Link
-                                        to="/admin"
-                                        className="block px-3 py-2 rounded-md text-blue-600 hover:text-blue-800 hover:bg-blue-50 text-center"
-                                        onClick={() => setShowMobileMenu(false)}
-                                    >
-                                        Panel Admin
-                                    </Link>
-                                </>
+                                <Link
+                                    to="/login"
+                                    className="block px-3 py-2 bg-blue-600 text-white rounded-md text-center hover:bg-blue-700"
+                                    onClick={() => setShowMobileMenu(false)}
+                                >
+                                    Iniciar Sesión
+                                </Link>
                             )}
                         </div>
                     </div>
