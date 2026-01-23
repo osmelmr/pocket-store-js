@@ -14,9 +14,6 @@ export const Store = () => {
   if (error) {
     return <div>Error</div>
   }
-  if (isLoading) {
-    return <div>Loading</div>
-  }
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header/Navbar */}
@@ -41,7 +38,7 @@ export const Store = () => {
 
       {/* Contenido principal */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <StoreProductList products={productsFilters.products} />
+        <StoreProductList products={productsFilters.products} isLoading={isLoading} />
       </main>
 
       {/* Footer */}
