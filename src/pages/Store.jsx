@@ -4,11 +4,11 @@ import { StoreHeader } from '../components/StoreHeader';
 import { StoreFooter } from '../components/StoreFooter';
 import { CategoryFilter } from "../components/CategoryFilter";
 import { OrderFilter } from "../components/OrderFilter";
-import { useProducts } from "../hooks/useProducts"
+import { useAllProducts } from "../hooks/useProducts"
 
 export const Store = () => {
 
-  const { data, error, isLoading } = useProducts()
+  const { data, error, isLoading } = useAllProducts()
   const productsFilters = useProductFilters(data)
 
   if (error) {
