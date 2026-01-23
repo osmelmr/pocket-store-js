@@ -1,10 +1,10 @@
 import { useAuthContext } from "../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { useState } from "react"
-import { Toast } from "../components/Toast";
+import { useToast } from "../zustand/useToast";
 
 export const Login = () => {
-  const [showToast, setShowToast] = useState(false)
+  const { showToast } = useToast();
   const navigate = useNavigate()
   const { login } = useAuthContext()
 
@@ -27,8 +27,9 @@ export const Login = () => {
       console.log(email, password)
       await login({ email, password })
       navigate("/")
+      showToast("Inicio de sesión exitoso", "success");
     } catch (error) {
-      setShowToast(true)
+      showToast("Error al iniciar sesión. Revisa tus credenciales.", "error");
       console.log(error)
     }
 
@@ -36,7 +37,6 @@ export const Login = () => {
 
   return (
     <>
-      <Toast message={"usuario o contraseña invalidos"} show={showToast} onClose={() => setShowToast(false)} type={"success"} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           {/* Logo */}

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useProduct, useUpdateProduct } from "../hooks/useProducts";
 import { useCategories } from "../hooks/useCategories";
-import { Toast } from "../components/Toast";
+import { useToast } from "../zustand/useToast";
 
 // Esquema de validación
 const productSchema = z.object({
@@ -41,7 +41,7 @@ const productSchema = z.object({
 export const ProductEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [showToast, setShowToast] = useState(false);
+  const { showToast } = useToast();
 
   // Obtener datos existentes
   const { data: product, isLoading, error } = useProduct(id);
@@ -95,8 +95,6 @@ export const ProductEdit = () => {
 
   // Función para manejar el envío del formulario
   const onSubmit = async (formData) => {
-    setShowToast(true);
-
     try {
       // Preparar datos para enviar
       const updateData = {
@@ -116,8 +114,10 @@ export const ProductEdit = () => {
 
         // Opcional: Redirigir después de éxito
         navigate("/admin/products");
+        showToast("Producto actualizado correctamente", "success");
       } catch (error) {
         console.error("Error al actualizar producto:", error);
+        showToast("Error al actualizar el producto", "error");
       }
 
     } catch (error) {
@@ -145,13 +145,6 @@ export const ProductEdit = () => {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Toast de confirmación */}
-      <Toast
-        message="Producto actualizado correctamente"
-        show={showToast}
-        onClose={() => setShowToast(false)}
-        type="success"
-      />
-
       {/* Header con ID del producto */}
       <div className="mb-6">
         <div className="flex justify-between items-start">

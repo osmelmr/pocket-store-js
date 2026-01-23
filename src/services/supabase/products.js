@@ -39,12 +39,13 @@ export async function createProduct(product) {
     console.log(product)
     const { data, error } = await supabase
         .from('products')
-        .insert([product]) // el owner lo valida RLS con auth.uid()
+        .insert([product])
         .select()
         .single()
 
-    if (error) throw error
-    return data
+    if (error) { console.log(error); throw error }
+    if (data) return data
+    return null
 }
 
 // Actualizar un producto

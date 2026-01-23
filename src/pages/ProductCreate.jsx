@@ -4,9 +4,7 @@ import { z } from "zod";
 import { useCreateProduct } from "../hooks/useProducts";
 import { useCategories } from "../hooks/useCategories";
 import { useNavigate } from "react-router";
-// import { categories as mockedCategories } from "../mocks/mocks"
-import { useState } from "react";
-import { Toast } from "../components/Toast";
+import { useToast } from "../zustand/useToast";
 
 const schema = z.object({
   name: z
@@ -37,8 +35,9 @@ const schema = z.object({
 });
 
 export const ProductCreate = () => {
+  const { showToast } = useToast()
   const navigate = useNavigate()
-  const [showToast, setShowToast] = useState(false)
+
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
     mode: "all",
@@ -55,7 +54,6 @@ export const ProductCreate = () => {
   const { mutate } = useCreateProduct()
 
   const onSubmit = async (data) => {
-    setShowToast(true)
     if (data.image.length >= 0) {
       console.log("alojamiento de imagen no soportado aun")
       delete data.image
@@ -63,11 +61,13 @@ export const ProductCreate = () => {
     console.log("Datos validos del producto antes del fetch:", data)
 
     try {
-      const { data: res, error } = await mutate(data)
-      if (error) throw new Error(error)
-      if (res) console.log(res)
+      const res = await mutate(data)
+      console.log(res)
+      showToast('Producto creado con éxito', 'success')
       reset()
+      navigate('/admin/products')
     } catch (error) {
+      showToast(`Error al crear el producto: ${error.message}`, 'error')
       console.log(error)
     }
 
@@ -75,7 +75,6 @@ export const ProductCreate = () => {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header */}
-      <Toast message={"producto creado"} show={showToast} onClose={() => setShowToast(false)} />
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-800">
           Crear Nuevo Producto
