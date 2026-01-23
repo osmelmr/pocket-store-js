@@ -1,12 +1,23 @@
 // import { productServices } from "../services/productServices";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { getProducts, getProduct, updateProduct, deleteProduct, createProduct } from "../services/supabase/products"
+import { getProducts, getProduct, updateProduct, deleteProduct, createProduct, getAllProducts } from "../services/supabase/products"
+import { useAuthContext } from "./useAuth";
 
 // 🔹 Listar productos
 export const useProducts = () => {
+    const { user } = useAuthContext()
     return useQuery({
         queryKey: ["products"],
-        queryFn: getProducts,
+        queryFn: () => getProducts(user.id),
+    });
+};
+
+// productos del admin tambien
+export const useAllProducts = () => {
+
+    return useQuery({
+        queryKey: ["products"],
+        queryFn: getAllProducts,
     });
 };
 

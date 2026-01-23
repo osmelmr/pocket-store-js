@@ -1,10 +1,21 @@
 import { supabase } from './client'
 
-// Obtener todos los productos del usuario autenticado
-export async function getProducts() {
+// Obtener todos los productos
+export async function getAllProducts() {
     const { data, error } = await supabase
         .from('products')
         .select('*')
+    if (data) console.log(data)
+    if (error) throw error
+    return data
+}
+
+// Obtener todos los productos del usuario autenticado
+export async function getProducts(userId) {
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('owner', userId);
     if (data) console.log(data)
     if (error) throw error
     return data
@@ -50,10 +61,11 @@ export async function updateProduct(productId, updates) {
 
 // Eliminar un producto
 export async function deleteProduct(productId) {
+    console.log(productId)
     const { error } = await supabase
         .from('products')
         .delete()
         .eq('id', productId)
-
-    if (error) throw error
+    if (error) { console.log(error); throw error }
+    console.log("algo")
 }
