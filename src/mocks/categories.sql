@@ -1,5 +1,5 @@
 -- Insertar categorías (asociadas al usuario 2b9e0a8d-16a3-4142-ad64-5250df2d0f2e)
-INSERT INTO public.categories (id, owner, name, created_at) VALUES
+INSERT INTO public.categories ( owner, name) VALUES
 ('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Electrónica'),
 ('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Fotografía'),
 ('2b9e0a8d-16a3-4142-ad64-5250df2d0f2e', 'Audio'),
