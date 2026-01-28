@@ -12,6 +12,7 @@ export async function getAllProducts() {
 
 // Obtener todos los productos del usuario autenticado
 export async function getProducts(userId) {
+    console.log(userId)
     const { data, error } = await supabase
         .from('products')
         .select('*')

@@ -1,7 +1,16 @@
 import { supabase } from './client'
 
 // Obtener todas las categorías del usuario autenticado
-export async function getCategories() {
+export async function getCategories(userId) {
+    const { data, error } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('owner', userId);
+    if (error) throw error
+    return data
+}
+
+export async function getAllCategories() {
     const { data, error } = await supabase
         .from('categories')
         .select('*')

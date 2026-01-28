@@ -1,13 +1,15 @@
-import { useCategories } from "../hooks/useCategories"
+import { useAllCategories } from "../hooks/useCategories"
 import { useFilters } from "../zustand/productsStore"
 
 export const CategoryFilter = () => {
-    const { data } = useCategories()
+    const { data } = useAllCategories()
     const category = useFilters(state => state.category)
     const setCategory = useFilters(state => state.setCategory)
     const filtered = (e) => {
+        console.log(e.target.value)
         setCategory(e.target.value);
     }
+
     return (
         <>
             <select

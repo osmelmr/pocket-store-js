@@ -1,11 +1,20 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 // import { categoryServices } from "../services/categoryServices";
-import { getCategories, getCategory, updateCategory, deleteCategory, createCategory } from "../services/supabase/categories"
+import { getCategories, getAllCategories, getCategory, updateCategory, deleteCategory, createCategory } from "../services/supabase/categories"
+import { useAuthContext } from "./useAuth";
 
 export const useCategories = () => {
+    const { user } = useAuthContext()
     return useQuery({
         queryKey: ["categories"],
-        queryFn: getCategories
+        queryFn: () => getCategories(user.id)
+    })
+}
+
+export const useAllCategories = () => {
+    return useQuery({
+        queryKey: ["allCategories"],
+        queryFn: getAllCategories
     })
 }
 
