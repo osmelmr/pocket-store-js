@@ -5,16 +5,28 @@ import { SearchFilter } from "../components/SearchFilter";
 import { CategoryFilter } from "../components/CategoryFilter";
 import { OrderFilter } from "../components/OrderFilter";
 import { ConfirmModal } from "../components/ConfirmModal";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useProducts, useDeleteProduct } from "../hooks/useProducts"
 import { useToast } from "../zustand/useToast";
+import { useUiProducts } from "../zustand/productsStore";
 
 export const ProductList = () => {
   // const products = initialProducts
   const { data, error, isLoading } = useProducts()
-  const productFilters = useProductFilters(data)
+
+  const { setProducts } = useUiProducts()
+
+  useEffect(() => {
+    if (data) {
+      setProducts(data)
+    }
+  }, [setProducts, data])
+
+
+  const productFilters = useProductFilters()
+
   const [showModal, setShowModal] = useState(false)
-  const { mutate: deleteP } = useDeleteProduct()
+  const { mutateAsync: deleteP } = useDeleteProduct()
   const [id, setId] = useState()
   const { showToast } = useToast()
 
@@ -33,16 +45,16 @@ export const ProductList = () => {
     }
   }
 
-  const totalP = productFilters.products.length
+  const totalP = productFilters.newProducts.length
   let totalS = 0
-  productFilters.products.map(p => totalS = totalS += p.stock)
-  const agotados = productFilters.products.filter(p => p.stock < 1)
+  productFilters.newProducts.map(p => totalS = totalS += p.stock)
+  const agotados = productFilters.newProducts.filter(p => p.stock < 1)
   const totalA = agotados.length
 
   const calcPromRate = () => {
     let tot = 0
-    productFilters.products.map(p => tot += p.rating)
-    return (tot / productFilters.products.length).toFixed(1)
+    productFilters.newProducts.map(p => tot += p.rating)
+    return (tot / productFilters.newProducts.length).toFixed(1)
   }
 
   const ratingP = calcPromRate()
@@ -187,21 +199,21 @@ export const ProductList = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Buscar Productos
             </label>
-            <SearchFilter productsFilters={error ? [] : productFilters} />
+            <SearchFilter />
           </div>
 
           <div className="w-full md:w-64">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Categoría
             </label>
-            <CategoryFilter productsFilters={error ? [] : productFilters} />
+            <CategoryFilter />
           </div>
 
           <div className="w-full md:w-64">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Ordenar por
             </label>
-            <OrderFilter productsFilters={error ? [] : productFilters} />
+            <OrderFilter />
           </div>
         </div>
       </div>
@@ -237,7 +249,7 @@ export const ProductList = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {/* Producto 1 */}
                 {
-                  productFilters.products.slice(0, 5).map(p =>
+                  productFilters.newProducts.slice(0, 5).map(p =>
                     <tr key={p.id} className="hover:bg-gray-50">
                       <td className="px-3 py-4">
                         <div className="flex items-center">

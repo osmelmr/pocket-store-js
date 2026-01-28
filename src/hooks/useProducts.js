@@ -15,7 +15,7 @@ export const useProducts = () => {
 // productos del admin tambien
 export const useAllProducts = () => {
     return useQuery({
-        queryKey: ["products"],
+        queryKey: ["allProducts"],
         queryFn: getAllProducts,
     });
 };
@@ -46,7 +46,7 @@ export const useUpdateProduct = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: ({ id, payload }) => updateProduct(id, payload),
-        onSuccess: (_, { id }) => {
+        onSettled: (_, { id }) => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
             queryClient.invalidateQueries({ queryKey: ["product", id] });
         },
@@ -58,8 +58,9 @@ export const useDeleteProduct = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (id) => deleteProduct(id),
-        onSuccess: () => {
+        onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
-        },
+            queryClient.invalidateQueries({ queryKey: ["allProducts"] });
+        }
     });
 };
