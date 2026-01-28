@@ -2,6 +2,7 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { getProducts, getProduct, updateProduct, deleteProduct, createProduct, getAllProducts } from "../services/supabase/products"
 import { useAuthContext } from "./useAuth";
+import { useToast } from "../zustand/useToast";
 
 // 🔹 Listar productos
 export const useProducts = () => {
@@ -36,9 +37,9 @@ export const useCreateProduct = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (payload) => createProduct(payload),
-        onSuccess: () => {
+        onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["products"] });
-        },
+        }
     });
 };
 

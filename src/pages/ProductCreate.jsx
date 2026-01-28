@@ -51,23 +51,23 @@ export const ProductCreate = () => {
   })
   const { data } = useCategories()
 
-  const { mutate } = useCreateProduct()
+  const { mutateAsync } = useCreateProduct()
 
   const onSubmit = async (data) => {
     if (data.image.length >= 0) {
       console.log("alojamiento de imagen no soportado aun")
       delete data.image
     }
-    console.log("Datos validos del producto antes del fetch:", data)
+    // console.log("Datos validos del producto antes del fetch:", data)
 
     try {
-      const res = await mutate(data)
+      const res = await mutateAsync(data)
       console.log(res)
       showToast('Producto creado con éxito', 'success')
       reset()
       navigate('/admin/products')
     } catch (error) {
-      showToast(`Error al crear el producto: ${error.message}`, 'error')
+      showToast(`Error al crear el producto`)
       console.log(error)
     }
 
