@@ -2,7 +2,6 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { getProducts, getProduct, updateProduct, deleteProduct, createProduct, getAllProducts } from "../services/supabase/products"
 import { useAuthContext } from "./useAuth";
-import { useToast } from "../zustand/useToast";
 
 // 🔹 Listar productos
 export const useProducts = () => {
@@ -15,7 +14,6 @@ export const useProducts = () => {
 
 // productos del admin tambien
 export const useAllProducts = () => {
-
     return useQuery({
         queryKey: ["products"],
         queryFn: getAllProducts,

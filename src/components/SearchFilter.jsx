@@ -1,5 +1,9 @@
-export const SearchFilter = ({ productsFilters }) => {
-    const { search, setSearch } = productsFilters
+import { useFilters } from "../zustand/productsStore";
+
+export const SearchFilter = () => {
+    const search = useFilters(state => state.search)
+    const setSearch = useFilters(state => state.setSearch)
+
     const filtered = (e) => {
         setSearch(e.target.value.toLowerCase());
     }

@@ -1,5 +1,8 @@
-export const OrderFilter = ({ productsFilters }) => {
-    const { order, setOrder } = productsFilters
+import { useFilters } from "../zustand/productsStore"
+
+export const OrderFilter = () => {
+    const order = useFilters(state => state.order)
+    const setOrder = useFilters(state => state.setOrder)
     const filtered = (e) => {
         setOrder(e.target.value);
     }

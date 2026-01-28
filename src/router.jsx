@@ -7,6 +7,8 @@ import { ProductCreate } from "./pages/ProductCreate.jsx"
 import { ProductEdit } from "./pages/ProductEdit.jsx"
 import { AdminLayout } from "./layouts/AdminLayout.jsx"
 import { Tests } from "./pages/Tests.jsx"
+import { StoreLayout } from "./layouts/StoreLayout.jsx"
+import { StoreProductList } from "./components/StoreProductList.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -19,7 +21,13 @@ export const router = createBrowserRouter([
     },
     {
         path: "store",
-        element: <Store />,
+        element: <StoreLayout />,
+        children: [
+            {
+                path: "",
+                element: <StoreProductList />
+            }
+        ]
     },
     {
         path: "login",

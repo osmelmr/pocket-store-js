@@ -1,15 +1,24 @@
 import { create } from "zustand"
+import { useUiProducts } from "./productsStore"
 
 export const useCart = create((set, get) => (
     {
         cart: [],
         addToCart: (id) => set(state => {
-            const exist = state.cart.find(c => c.id == id)
-            console.log(exist)
+            console.log(id)
+            const currentQuant = useUiProducts.getState().howMany(id)
+            if (currentQuant === 0) return { cart: state.cart }
+
+            const exist = state.cart.find(c => c.id === id)
+
             let newCart = []
             if (exist) {
                 newCart = state.cart.map(p => {
-                    if (p.id == id) {
+                    if (p.id === id) {
+                        console.log(currentQuant)
+                        if (currentQuant === 0) {
+                            return p
+                        }
                         return { ...p, quantity: (p.quantity + 1) }
                     }
                     return p
@@ -17,6 +26,7 @@ export const useCart = create((set, get) => (
             } else {
                 newCart = [...state.cart, { id: id, quantity: 1 }]
             }
+            useUiProducts.getState().lessStockByOne(id)
             return { cart: newCart }
 
         }),
@@ -27,9 +37,10 @@ export const useCart = create((set, get) => (
                 return { cart: state.cart }
             }
             const quantity = item.quantity
-            if (quantity > 1) {
+            if (quantity > 0) {
                 newCart = state.cart.map(p => {
                     if (p.id == id) {
+                        useUiProducts.getState().addStockByOne(id)
                         return { ...p, quantity: quantity - 1 }
                     }
                     return p

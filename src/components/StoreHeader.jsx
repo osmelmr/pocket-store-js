@@ -5,7 +5,7 @@ import { SearchFilter } from "./SearchFilter"
 import { useNavigate } from "react-router"
 import { useState } from "react"
 
-export const StoreHeader = ({ productsFilters }) => {
+export const StoreHeader = () => {
     const navigate = useNavigate()
     const { allStock } = useCart()
     const { user, logOut } = useAuthContext()
@@ -52,7 +52,7 @@ export const StoreHeader = ({ productsFilters }) => {
 
                     {/* Barra de búsqueda - Siempre visible en desktop, oculta en móvil cuando menú abierto */}
                     <div className={`${showMobileMenu ? 'md:flex' : 'flex'} flex-1 max-w-2xl mx-4 md:mx-8`}>
-                        <SearchFilter productsFilters={productsFilters} />
+                        <SearchFilter />
                     </div>
 
                     {/* Acciones */}

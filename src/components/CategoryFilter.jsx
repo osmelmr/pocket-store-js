@@ -1,8 +1,10 @@
 import { useCategories } from "../hooks/useCategories"
+import { useFilters } from "../zustand/productsStore"
 
-export const CategoryFilter = ({ productsFilters }) => {
+export const CategoryFilter = () => {
     const { data } = useCategories()
-    const { category, setCategory } = productsFilters
+    const category = useFilters(state => state.category)
+    const setCategory = useFilters(state => state.setCategory)
     const filtered = (e) => {
         setCategory(e.target.value);
     }

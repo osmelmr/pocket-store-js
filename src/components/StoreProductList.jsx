@@ -1,7 +1,21 @@
+import { useEffect } from "react"
+import { useAllProducts } from "../hooks/useProducts"
+import { useUiProducts } from "../zustand/productsStore"
 import { useCart } from "../zustand/useCart"
+import { useProductFilters } from "../hooks/useProductFilters"
 
-export const StoreProductList = ({ products, isLoading = false }) => {
+export const StoreProductList = () => {
     const { quantityP, lessFromCart, addToCart } = useCart()
+    const setProducts = useUiProducts(state => state.setProducts)
+    const { data, isLoading } = useAllProducts()
+
+    useEffect(() => {
+        if (data) setProducts(data)
+
+    }, [data, setProducts])
+
+    const { newProducts: products } = useProductFilters()
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-64">
@@ -9,6 +23,7 @@ export const StoreProductList = ({ products, isLoading = false }) => {
             </div>
         )
     }
+
     return (
         <>
             {/* Info */}
@@ -24,7 +39,7 @@ export const StoreProductList = ({ products, isLoading = false }) => {
             {/* Grid de productos */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {/* Producto 1 */}
-                {products && products.map(p => (p.stock > 0 &&
+                {products && products.map(p => (
                     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" key={p.id}>
                         <div className="relative h-48 bg-gray-100">
                             <img
@@ -45,6 +60,7 @@ export const StoreProductList = ({ products, isLoading = false }) => {
                                 </svg>
                                 {p.rating ? p.rating : "NaN"}
                             </span>
+
                         </div>
 
                         <div className="p-4">
@@ -60,7 +76,15 @@ export const StoreProductList = ({ products, isLoading = false }) => {
                                     <span className="text-lg font-bold text-gray-900">
                                         ${p.price ? p.price : "NaN"}
                                     </span>
-
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        {p.stock ?
+                                            <span className="text-green-600">
+                                                ✓ Stock ({p.stock} disponibles)
+                                            </span>
+                                            :
+                                            <span className="text-red-600">✗ Agotado</span>
+                                        }
+                                    </p>
                                 </div>
 
                                 <button
@@ -98,6 +122,7 @@ export const StoreProductList = ({ products, isLoading = false }) => {
                                                 -
                                             </button>
                                             <button
+                                                disabled={!p.stock}
                                                 onClick={() => { addToCart(p.id) }}
                                                 className="w-6 h-6 flex items-center justify-center bg-green-100 text-green-600 rounded hover:bg-green-200 disabled:opacity-50"
                                             >
