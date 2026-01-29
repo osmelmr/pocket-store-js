@@ -9,30 +9,32 @@ import { AdminLayout } from "./layouts/AdminLayout.jsx"
 import { Tests } from "./pages/Tests.jsx"
 import { StoreLayout } from "./layouts/StoreLayout.jsx"
 import { StoreProductList } from "./components/StoreProductList.jsx";
+import { CartPage } from "./components/CartPage.jsx";
 
 export const router = createBrowserRouter([
     {
         path: "",
-        element: <Store />,
+        element: <StoreLayout />,
+        children: [
+            {
+                path: "",
+                element: <StoreProductList />,
+            },
+            {
+                path: "cart",
+                element: <CartPage />,
+            }
+        ]
     },
     {
         path: "tests",
         element: <Tests />,
     },
     {
-        path: "store",
-        element: <StoreLayout />,
-        children: [
-            {
-                path: "",
-                element: <StoreProductList />
-            }
-        ]
-    },
-    {
         path: "login",
         element: <Login />,
     },
+
     {
         path: "admin",
         element: <AdminLayout />,
