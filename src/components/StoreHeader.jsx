@@ -12,8 +12,10 @@ import {
     Cog6ToothIcon,
     Bars3Icon,
     XMarkIcon,
-    ShoppingCartIcon
+    ShoppingCartIcon,
+    MagnifyingGlassIcon as SearchIcon
 } from "@heroicons/react/24/outline";
+
 
 
 
@@ -24,6 +26,8 @@ export const StoreHeader = () => {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+    const [alterSearch, setAlterSearch] = useState(false);
 
     const handleLogout = () => {
         setIsProfileOpen(false);
@@ -50,13 +54,19 @@ export const StoreHeader = () => {
                     </div>
 
                     {/* Search - Desktop */}
-                    <div className=" flex-1 max-w-lg mx-8">
+
+                    <div className="hidden sm:block flex-1 max-w-lg mx-8">
                         <SearchFilter />
                     </div>
 
+
+
                     {/* Actions */}
                     <div className="flex items-center gap-2 md:gap-4">
-
+                        {!alterSearch &&
+                            <SearchIcon
+                                onClick={() => { setAlterSearch(true); setIsMenuOpen(false); setIsProfileOpen(false); }}
+                                className="sm:hidden w-6 h-6 text-gray-600" />}
                         <Link to="/admin" className="hidden sm:block text-sm font-semibold text-gray-600 hover:text-blue-600 transition-colors">
                             Admin
                         </Link>
@@ -76,7 +86,7 @@ export const StoreHeader = () => {
                             {user ? (
                                 <>
                                     <button
-                                        onClick={() => { setIsProfileOpen(!isProfileOpen); setIsMenuOpen(false); }}
+                                        onClick={() => { setIsProfileOpen(!isProfileOpen); setIsMenuOpen(false); setAlterSearch(false); }}
                                         className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-50 transition-all focus:outline-none"
                                     >
                                         <img
@@ -119,7 +129,7 @@ export const StoreHeader = () => {
                         </div>
 
                         <button
-                            onClick={() => { setIsMenuOpen(!isMenuOpen); setIsProfileOpen(false); }}
+                            onClick={() => { setIsMenuOpen(!isMenuOpen); setIsProfileOpen(false); setAlterSearch(false); }}
                             className="sm:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                         >
                             {isMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
@@ -143,6 +153,16 @@ export const StoreHeader = () => {
                     </div>
                 </div>
             )}
+            {alterSearch &&
+                <div className="absolute top-20 left-0 right-0 z-50 mx-4 mt-2 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-2xl md:hidden">
+                    <div className="flex items-center justify-end gap-2 p-2">
+                        <SearchFilter className="w-full" />
+                        <button onClick={() => setAlterSearch(false)} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                            <XMarkIcon className="w-6 h-6" />
+                        </button>
+                    </div>
+                </div>
+            }
         </header>
     );
 };

@@ -10,7 +10,7 @@ export const SearchFilter = () => {
 
     return (
         <>
-            <div className="relative">
+            <div className="relative w-full">
                 <input
                     value={search}
                     onChange={filtered}
