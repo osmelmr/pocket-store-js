@@ -6,40 +6,43 @@ import {
     ArrowLeftIcon,
     ShoppingBagIcon
 } from "@heroicons/react/24/outline";
+import { useCart } from "../zustand/useCart";
 
 export const CartPage = () => {
     // --- MOCKS (Sustituye esto por tu lógica de Zustand después) ---
-    const cart = [
-        {
-            id: 1,
-            name: "iPhone 15 Pro - Titanium Blue",
-            price: 999.00,
-            quantity: 1,
-            image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?q=80&w=250&auto=format&fit=crop"
-        },
-        {
-            id: 2,
-            name: "Sony WH-1000XM5 Noise Cancelling",
-            price: 349.50,
-            quantity: 2,
-            image: "https://images.unsplash.com/photo-1644734567652-2b074fd05abb?q=80&w=250&auto=format&fit=crop"
-        },
-        {
-            id: 3,
-            name: "MacBook Air M2 - Space Gray",
-            price: 1199.00,
-            quantity: 1,
-            image: "https://images.unsplash.com/photo-1611186871348-b1ec696e52c9?q=80&w=250&auto=format&fit=crop"
-        }
-    ];
+    // const cart = [
+    //     {
+    //         id: 1,
+    //         name: "iPhone 15 Pro - Titanium Blue",
+    //         price: 999.00,
+    //         quantity: 1,
+    //         image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?q=80&w=250&auto=format&fit=crop"
+    //     },
+    //     {
+    //         id: 2,
+    //         name: "Sony WH-1000XM5 Noise Cancelling",
+    //         price: 349.50,
+    //         quantity: 2,
+    //         image: "https://images.unsplash.com/photo-1644734567652-2b074fd05abb?q=80&w=250&auto=format&fit=crop"
+    //     },
+    //     {
+    //         id: 3,
+    //         name: "MacBook Air M2 - Space Gray",
+    //         price: 1199.00,
+    //         quantity: 1,
+    //         image: "https://images.unsplash.com/photo-1611186871348-b1ec696e52c9?q=80&w=250&auto=format&fit=crop"
+    //     }
+    // ];
+    const { cart, addToCart, lessFromCart, removeFromCart: remove } = useCart();
 
     const getTotalPrice = () => {
         return cart.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2);
     };
 
     // Funciones dummy para que el onClick no de error
-    const removeFromCart = (id) => console.log("Eliminar producto:", id);
-    const updateQuantity = (id, q) => console.log("Nueva cantidad para", id, ":", q);
+    const removeThisFromCart = (id) => { console.log("Eliminar producto:", id); remove(id) };
+    const removeFromCart = (id) => { console.log("Eliminar producto:", id); lessFromCart(id) };
+    const updateQuantity = (id, q) => { console.log("Nueva cantidad para", id, ":", q); addToCart(id) };
     // ----------------------------------------------------------------
 
     if (cart.length === 0) {
@@ -79,7 +82,7 @@ export const CartPage = () => {
                                         {product.name}
                                     </h3>
                                     <button
-                                        onClick={() => removeFromCart(product.id)}
+                                        onClick={() => removeThisFromCart(product.id)}
                                         className="text-gray-400 hover:text-red-500 transition-colors p-1"
                                     >
                                         <TrashIcon className="w-5 h-5" />
@@ -94,9 +97,9 @@ export const CartPage = () => {
                                     {/* Control de Cantidad */}
                                     <div className="flex items-center bg-gray-50 rounded-lg border border-gray-200">
                                         <button
-                                            onClick={() => updateQuantity(product.id, product.quantity - 1)}
+                                            onClick={() => removeFromCart(product.id)}
                                             className="p-1.5 hover:bg-gray-200 text-gray-600 transition-colors disabled:opacity-30"
-                                            disabled={product.quantity <= 1}
+                                            disabled={product.quantity < 1}
                                         >
                                             <MinusSmallIcon className="w-4 h-4" />
                                         </button>

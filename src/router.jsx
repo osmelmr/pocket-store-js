@@ -9,7 +9,7 @@ import { AdminLayout } from "./layouts/AdminLayout.jsx"
 import { Tests } from "./pages/Tests.jsx"
 import { StoreLayout } from "./layouts/StoreLayout.jsx"
 import { StoreProductList } from "./components/StoreProductList.jsx";
-import { CartPage } from "./components/CartPage.jsx";
+import { CartPage } from "./pages/CartPage.jsx";
 
 export const router = createBrowserRouter([
     {

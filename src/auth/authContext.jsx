@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 // import { authServices } from "../services/authServices"
-import { signIn, signOut, signUp } from "../services/supabase/auth"
+import { signIn, signUp } from "../services/supabase/auth"
 // import { getProfile } from "../services/supabase/profile"
 import { AuthContext } from "./context"
 
