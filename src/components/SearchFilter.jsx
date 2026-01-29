@@ -1,4 +1,6 @@
 import { useFilters } from "../zustand/productsStore";
+// Importamos el icono correcto de Heroicons
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 export const SearchFilter = () => {
     const search = useFilters(state => state.search)
@@ -9,29 +11,25 @@ export const SearchFilter = () => {
     }
 
     return (
-        <>
-            <div className="relative w-full">
-                <input
-                    value={search}
-                    onChange={filtered}
-                    type="text"
-                    placeholder="Buscar por nombre o descripción..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <svg
-                    className="absolute right-3 top-2.5 w-5 h-5 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                </svg>
-            </div>
-        </>
+        <div className="relative w-full group">
+            {/* AJUSTES: 
+                1. pl-10 (Padding Left): reserva espacio para que el texto empiece después del icono.
+                2. transition-all: para que se vea fluido si decides aplicar el efecto de expansión luego.
+            */}
+            <input
+                value={search}
+                onChange={filtered}
+                type="text"
+                placeholder="Buscar por nombre o descripción..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm"
+            />
+
+            {/* Icono posicionado a la izquierda (left-3). 
+                Al usar absolute, no ocupa espacio real, por eso el pl-10 del input es vital.
+            */}
+            <MagnifyingGlassIcon
+                className="absolute left-3 top-2.5 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors"
+            />
+        </div>
     )
 }

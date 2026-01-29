@@ -36,7 +36,7 @@ export const StoreHeader = () => {
     };
 
     return (
-        <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 ">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
 
@@ -140,26 +140,31 @@ export const StoreHeader = () => {
 
             {/* Mobile Menu Overlay */}
             {isMenuOpen && (
-                <div className="absolute top-full left-0 right-0 z-50 mx-4 mt-2 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-2xl md:hidden">
-                    <div className="flex flex-col p-2 space-y-1">
-                        <Link
-                            to="/admin"
-                            onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center justify-end gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-                        >
-                            <span className="font-medium">Panel Administración</span>
-                            <Cog6ToothIcon className="w-5 h-5 text-gray-400" />
-                        </Link>
+                <div className="absolute top-20 left-0 right-0 z-50 overflow-hidden bg-white/80 backdrop-blur-md shadow-2xl md:hidden">
+
+                    <div className=" top-full left-0 right-0 z-50 mx-4 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-2xl md:hidden">
+                        <div className="flex flex-col p-2 space-y-1">
+                            <Link
+                                to="/admin"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="flex items-center justify-end gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                            >
+                                <span className="font-medium">Panel Administración</span>
+                                <Cog6ToothIcon className="w-5 h-5 text-gray-400" />
+                            </Link>
+                        </div>
                     </div>
                 </div>
             )}
             {alterSearch &&
-                <div className="absolute top-20 left-0 right-0 z-50 mx-4 mt-2 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-2xl md:hidden">
-                    <div className="flex items-center justify-end gap-2 p-2">
-                        <SearchFilter className="w-full" />
-                        <button onClick={() => setAlterSearch(false)} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-                            <XMarkIcon className="w-6 h-6" />
-                        </button>
+                <div className="absolute top-20 left-0 right-0 z-50 overflow-hidden bg-white/80 backdrop-blur-md shadow-2xl md:hidden">
+                    <div className="left-0 right-0 z-50 mx-4 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-2xl md:hidden">
+                        <div className="flex items-center justify-end gap-2 p-2">
+                            <SearchFilter />
+                            <button onClick={() => setAlterSearch(false)} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                                <XMarkIcon className="w-6 h-6" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             }
