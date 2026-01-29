@@ -11,10 +11,11 @@ export const SearchFilter = () => {
     }
 
     return (
-        <div className="relative w-full group">
+        <div className="relative group w-full">
             {/* AJUSTES: 
                 1. pl-10 (Padding Left): reserva espacio para que el texto empiece después del icono.
                 2. transition-all: para que se vea fluido si decides aplicar el efecto de expansión luego.
+                3. w-full: se adapta al ancho del contenedor padre.
             */}
             <input
                 value={search}

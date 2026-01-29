@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router";
 import { useAuthContext } from "../hooks/useAuth";
 import { SearchFilter } from "./SearchFilter";
 import { useState } from "react";
+import { CategoryFilter } from "./CategoryFilter";
+import { OrderFilter } from "./OrderFilter";
 
 // Importación corregida para Heroicons v2
 import {
@@ -63,10 +65,7 @@ export const StoreHeader = () => {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2 md:gap-4">
-                        {!alterSearch &&
-                            <SearchIcon
-                                onClick={() => { setAlterSearch(true); setIsMenuOpen(false); setIsProfileOpen(false); }}
-                                className="sm:hidden w-6 h-6 text-gray-600" />}
+
                         <Link to="/admin" className="hidden sm:block text-sm font-semibold text-gray-600 hover:text-blue-600 transition-colors">
                             Admin
                         </Link>
@@ -137,6 +136,31 @@ export const StoreHeader = () => {
                     </div>
                 </div>
             </div>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0 md:gap-8">
+
+                    {/* Buscar - Móvil */}
+                    <div className="sm:hidden flex items-center space-x-4 flex-1">
+                        <span className="w-20 text-gray-700">Buscar:</span>
+                        <SearchFilter className="w-full" />
+                    </div>
+
+                    {/* Filtrar por */}
+                    <div className="flex items-center space-x-2 md:space-x-4 flex-1 md:flex-none">
+                        <span className="w-20 text-gray-700 whitespace-nowrap">Filtrar:</span>
+                        <CategoryFilter className="w-40" />
+                    </div>
+
+                    {/* Ordenar por */}
+                    <div className="flex items-center space-x-2 md:space-x-4 flex-1 md:flex-none">
+                        <span className="w-20 text-gray-700 whitespace-nowrap">Ordenar:</span>
+                        <OrderFilter className="w-40" />
+                    </div>
+
+                </div>
+            </div>
+
+
 
             {/* Mobile Menu Overlay */}
             {isMenuOpen && (
@@ -156,18 +180,8 @@ export const StoreHeader = () => {
                     </div>
                 </div>
             )}
-            {alterSearch &&
-                <div className="absolute top-20 left-0 right-0 z-50 overflow-hidden bg-white/80 backdrop-blur-md shadow-2xl md:hidden">
-                    <div className="left-0 right-0 z-50 mx-4 overflow-hidden rounded-xl border border-gray-100 bg-white shadow-2xl md:hidden">
-                        <div className="flex items-center justify-end gap-2 p-2">
-                            <SearchFilter />
-                            <button onClick={() => setAlterSearch(false)} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-                                <XMarkIcon className="w-6 h-6" />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            }
+
+
         </header>
     );
 };
