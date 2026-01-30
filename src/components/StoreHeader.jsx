@@ -14,6 +14,7 @@ import {
     AdjustmentsHorizontalIcon, // Icono de filtros
     ArrowLeftOnRectangleIcon
 } from "@heroicons/react/24/outline";
+import { is } from "zod/v4/locales";
 
 export const StoreHeader = () => {
     const navigate = useNavigate();
@@ -63,7 +64,7 @@ export const StoreHeader = () => {
     };
 
     return (
-        <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 h-20 mb-40 md:mb-25">
+        <header className={`bg-white/80 backdrop-blur-md ${!isFiltersVisible ? "shadow-sm" : ""} sticky top-0 z-50 h-20 mb-50 md:mb-25`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
                 <div className="flex justify-between items-center h-20">
 
