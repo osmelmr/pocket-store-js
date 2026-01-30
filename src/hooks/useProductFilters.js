@@ -5,7 +5,7 @@ const filterCategory = (products, category) => {
     let newProducts = products
     if (category && category !== "all") {
         newProducts = products.filter(p =>
-            p.category.includes(category)
+            p.category && p.category.includes(category)
         )
     }
     return newProducts

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useCart } from "../zustand/useCart";
 import { Link, useNavigate } from "react-router";
 import { useAuthContext } from "../hooks/useAuth";
