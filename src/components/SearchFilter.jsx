@@ -11,7 +11,7 @@ export const SearchFilter = () => {
     }
 
     return (
-        <div className="relative group w-full">
+        <div className="relative group w-full ">
             {/* AJUSTES: 
                 1. pl-10 (Padding Left): reserva espacio para que el texto empiece después del icono.
                 2. transition-all: para que se vea fluido si decides aplicar el efecto de expansión luego.
@@ -22,7 +22,7 @@ export const SearchFilter = () => {
                 onChange={filtered}
                 type="text"
                 placeholder="Buscar por nombre o descripción..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm hover:border-blue-500 hover:shadow-sm"
             />
 
             {/* Icono posicionado a la izquierda (left-3). 

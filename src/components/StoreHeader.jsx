@@ -14,7 +14,6 @@ import {
     AdjustmentsHorizontalIcon, // Icono de filtros
     ArrowLeftOnRectangleIcon
 } from "@heroicons/react/24/outline";
-import { is } from "zod/v4/locales";
 
 export const StoreHeader = () => {
     const navigate = useNavigate();
@@ -183,10 +182,10 @@ export const StoreHeader = () => {
                                 <div className="sm:hidden w-full md:w-48 bg-white rounded-lg">
                                     <SearchFilter />
                                 </div>
-                                <div className="w-full md:w-48 bg-white rounded-lg">
+                                <div className="w-full md:w-48">
                                     <CategoryFilter className="" />
                                 </div>
-                                <div className="w-full md:w-48 bg-white rounded-lg">
+                                <div className="w-full md:w-48">
                                     <OrderFilter className="" />
                                 </div>
                             </div>
