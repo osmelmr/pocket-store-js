@@ -24,10 +24,14 @@ export const StoreHeader = () => {
     const profileRef = useRef(null);
 
     const [closerFilters, setCloserFilters] = useState(false);
+    const [isManuallyOpenedOnMobile, setIsManuallyOpenedOnMobile] = useState(false);
 
     const { scrollY } = useScroll();
 
     useMotionValueEvent(scrollY, "change", (latest) => {
+        // No aplicar scroll automático si los filtros fueron abiertos manualmente en móvil
+        if (isManuallyOpenedOnMobile) return;
+
         // Solo escondemos automáticamente si el usuario baja de 80px
         // No forzamos "true" si el usuario lo cerró manualmente (opcional)
         if (latest > 80) {
@@ -92,7 +96,11 @@ export const StoreHeader = () => {
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.8 }}
-                                        onClick={() => { setIsFiltersVisible(true); setCloserFilters(true); }}
+                                        onClick={() => {
+                                            setIsFiltersVisible(true);
+                                            setCloserFilters(true);
+                                            setIsManuallyOpenedOnMobile(true);
+                                        }}
                                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors flex items-center gap-1"
                                         title="Mostrar filtros"
                                     >
@@ -104,15 +112,17 @@ export const StoreHeader = () => {
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.8 }}
-                                        onClick={() => setIsFiltersVisible(false)}
+                                        onClick={() => {
+                                            setIsFiltersVisible(false);
+                                            setIsManuallyOpenedOnMobile(false);
+                                        }}
                                         className="p-2 text-gray-600 hover:bg-blue-50 rounded-full transition-colors flex items-center gap-1"
                                         title="Ocultar filtros"
                                     >
                                         <AdjustmentsHorizontalIcon className="w-6 h-6" />
                                         <span className="hidden md:block text-xs font-bold uppercase tracking-wider">Filtros</span>
                                     </motion.button>
-                                )
-                                }
+                                )}
                             </AnimatePresence>
                         </div>
                         {/* Cart */}
