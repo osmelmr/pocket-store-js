@@ -62,37 +62,37 @@ export const StoreHeader = () => {
 
                     {/* Acciones */}
                     <div className="flex items-center gap-2 md:gap-4">
-
-                        {/* BOTÓN DE FILTROS: Aparece solo cuando los filtros están ocultos */}
-                        <AnimatePresence>
-                            {!isFiltersVisible ? (
-                                <motion.button
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.8 }}
-                                    onClick={() => { setIsFiltersVisible(true); setCloserFilters(true); }}
-                                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors flex items-center gap-1"
-                                    title="Mostrar filtros"
-                                >
-                                    <AdjustmentsHorizontalIcon className="w-6 h-6" />
-                                    <span className="hidden md:block text-xs font-bold uppercase tracking-wider">Filtros</span>
-                                </motion.button>
-                            ) : closerFilters && (
-                                <motion.button
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.8 }}
-                                    onClick={() => setIsFiltersVisible(false)}
-                                    className="p-2 text-gray-600 hover:bg-blue-50 rounded-full transition-colors flex items-center gap-1"
-                                    title="Ocultar filtros"
-                                >
-                                    <AdjustmentsHorizontalIcon className="w-6 h-6" />
-                                    <span className="hidden md:block text-xs font-bold uppercase tracking-wider">Filtros</span>
-                                </motion.button>
-                            )
-                            }
-                        </AnimatePresence>
-
+                        <div className="flex items-center justify-center md:w-24 ">
+                            {/* BOTÓN DE FILTROS: Aparece solo cuando los filtros están ocultos */}
+                            <AnimatePresence>
+                                {!isFiltersVisible ? (
+                                    <motion.button
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.8 }}
+                                        onClick={() => { setIsFiltersVisible(true); setCloserFilters(true); }}
+                                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors flex items-center gap-1"
+                                        title="Mostrar filtros"
+                                    >
+                                        <AdjustmentsHorizontalIcon className="w-6 h-6" />
+                                        <span className="hidden md:block text-xs font-bold uppercase tracking-wider">Filtros</span>
+                                    </motion.button>
+                                ) : closerFilters && (
+                                    <motion.button
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.8 }}
+                                        onClick={() => setIsFiltersVisible(false)}
+                                        className="p-2 text-gray-600 hover:bg-blue-50 rounded-full transition-colors flex items-center gap-1"
+                                        title="Ocultar filtros"
+                                    >
+                                        <AdjustmentsHorizontalIcon className="w-6 h-6" />
+                                        <span className="hidden md:block text-xs font-bold uppercase tracking-wider">Filtros</span>
+                                    </motion.button>
+                                )
+                                }
+                            </AnimatePresence>
+                        </div>
                         {/* Cart */}
                         <Link to="/cart" className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-all">
                             <ShoppingCartIcon className="w-6 h-6" />
@@ -139,9 +139,16 @@ export const StoreHeader = () => {
                         className="absolute top-20 left-0 w-full bg-white/95 backdrop-blur-md shadow-md z-10 border-t border-gray-100"
                     >
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                            <div className="flex flex-col md:flex-row gap-4">
-                                <CategoryFilter className="w-full md:w-48" />
-                                <OrderFilter className="w-full md:w-48" />
+                            <div className="flex flex-col md:flex-row gap-4 md:justify-between">
+                                <div className="sm:hidden w-full md:w-48">
+                                    <SearchFilter />
+                                </div>
+                                <div className="w-full md:w-48">
+                                    <CategoryFilter className="" />
+                                </div>
+                                <div className="w-full md:w-48">
+                                    <OrderFilter className="" />
+                                </div>
                             </div>
                         </div>
                     </motion.div>
