@@ -2,7 +2,7 @@ import { useCart } from "../zustand/useCart";
 import { Link, useNavigate } from "react-router";
 import { useAuthContext } from "../hooks/useAuth";
 import { SearchFilter } from "./SearchFilter";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { CategoryFilter } from "./CategoryFilter";
 import { OrderFilter } from "./OrderFilter";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
@@ -20,6 +20,7 @@ export const StoreHeader = () => {
     const { user, logOut } = useAuthContext();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isFiltersVisible, setIsFiltersVisible] = useState(true);
+    const profileRef = useRef(null);
 
     const [closerFilters, setCloserFilters] = useState(false);
 
@@ -35,6 +36,25 @@ export const StoreHeader = () => {
         }
     });
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setIsProfileOpen(false);
+            }
+        };
+
+        if (isProfileOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+        if (!isProfileOpen) {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isProfileOpen]);
+
     const handleLogout = () => {
         setIsProfileOpen(false);
         logOut();
@@ -43,7 +63,7 @@ export const StoreHeader = () => {
 
     return (
         <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 h-20 mb-40 md:mb-25">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white/90 backdrop-blur-md relative z-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
                 <div className="flex justify-between items-center h-20">
 
                     {/* Logo */}
@@ -105,7 +125,7 @@ export const StoreHeader = () => {
                         </Link>
 
                         {/* User Profile */}
-                        <div className="relative">
+                        <div className="relative" ref={profileRef}>
                             {user ? (
                                 <>
                                     <button onClick={() => setIsProfileOpen(!isProfileOpen)} className="flex items-center p-1">
@@ -154,17 +174,17 @@ export const StoreHeader = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -50, opacity: 0 }}
                         transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="absolute top-20 left-0 w-full bg-white/95 backdrop-blur-md shadow-md z-10 border-t border-gray-100"
+                        className="absolute top-20 left-0 w-full bg-white/80 backdrop-blur-md shadow-md z-10"
                     >
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                             <div className="flex flex-col md:flex-row gap-4 md:justify-between">
-                                <div className="sm:hidden w-full md:w-48">
+                                <div className="sm:hidden w-full md:w-48 bg-white rounded-lg">
                                     <SearchFilter />
                                 </div>
-                                <div className="w-full md:w-48">
+                                <div className="w-full md:w-48 bg-white rounded-lg">
                                     <CategoryFilter className="" />
                                 </div>
-                                <div className="w-full md:w-48">
+                                <div className="w-full md:w-48 bg-white rounded-lg">
                                     <OrderFilter className="" />
                                 </div>
                             </div>
