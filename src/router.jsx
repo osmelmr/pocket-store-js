@@ -10,6 +10,7 @@ import { Tests } from "./pages/Tests.jsx"
 import { StoreLayout } from "./layouts/StoreLayout.jsx"
 import { StoreProductList } from "./components/StoreProductList.jsx";
 import { CartPage } from "./pages/CartPage.jsx";
+import { Register } from "./pages/Register.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -31,8 +32,16 @@ export const router = createBrowserRouter([
         element: <Tests />,
     },
     {
+        path: "store2",
+        element: <Store />,
+    },
+    {
         path: "login",
         element: <Login />,
+    },
+    {
+        path: "register",
+        element: <Register />,
     },
 
     {

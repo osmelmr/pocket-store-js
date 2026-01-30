@@ -36,15 +36,22 @@ export const AuthProvider = ({ children }) => {
 
         }
     }
-    const register = async ({ password, email }) => {
+    const register = async ({ password, email, options }) => {
         try {
+            const data = await signUp(email, password, options)
+            if (data?.user) {
+                const loginData = await signIn({ email, password })
 
-            const data = signUp({ password, email })
-            setUser(data.user)
+                setUser(loginData.user)
+                localStorage.setItem("user", JSON.stringify(loginData.user))
+            }
+
         } catch (error) {
             console.log(error)
+            throw error
         }
     }
+
     const logOut = () => {
         localStorage.removeItem("user")
         setUser(null)

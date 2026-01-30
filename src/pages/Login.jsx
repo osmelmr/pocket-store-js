@@ -107,32 +107,7 @@ export const Login = () => {
                 </div>
               </div>
 
-              {/* Recordarme y enlaces */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="rememberMe"
-                    name="rememberMe"
-                    type="checkbox"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded "
-                  />
-                  <label
-                    htmlFor="rememberMe"
-                    className="ml-2 block text-sm text-gray-900"
-                  >
-                    Recordar sesión
-                  </label>
-                </div>
 
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 hover:text-blue-500"
-                  >
-                    ¿Olvidaste tu contraseña?
-                  </a>
-                </div>
-              </div>
 
               {/* Botón de login */}
               <div>
@@ -146,7 +121,7 @@ export const Login = () => {
             </form>
 
             {/* Demo Login */}
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300" />
@@ -179,10 +154,10 @@ export const Login = () => {
                   Usar credenciales de demostración
                 </button>
               </div>
-            </div>
+            </div> */}
 
             {/* Info adicional */}
-            <div className="mt-8 p-4 bg-blue-50 rounded-lg">
+            {/* <div className="mt-8 p-4 bg-blue-50 rounded-lg">
               <div className="flex">
                 <svg
                   className="w-5 h-5 text-blue-600 mr-2 mt-0.5"
@@ -208,40 +183,43 @@ export const Login = () => {
                   </p>
                 </div>
               </div>
+            </div> */}
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600">
+                ¿No tienes una cuenta?{" "}
+                <button
+                  onClick={() => navigate("/register")}
+                  className="font-medium text-blue-600 hover:text-blue-500"
+                >
+                  Regístrate aquí
+                </button>
+              </p>
+              <div className="mt-4">
+                <button
+                  onClick={() => navigate("/")}
+                  className="text-sm text-gray-600 hover:text-gray-900 flex items-center justify-center mx-auto"
+                >
+                  <svg
+                    className="w-4 h-4 mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                    />
+                  </svg>
+                  Ver tienda pública
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Enlaces adicionales */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              ¿No tienes una cuenta?{" "}
-              <button
-                className="font-medium text-blue-600 hover:text-blue-500"
-              >
-                Regístrate aquí
-              </button>
-            </p>
-            <div className="mt-4">
-              <button
-                className="text-sm text-gray-600 hover:text-gray-900 flex items-center justify-center mx-auto"
-              >
-                <svg
-                  className="w-4 h-4 mr-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                  />
-                </svg>
-                Ver tienda pública
-              </button>
-            </div>
-          </div>
+
 
           {/* Footer informativo */}
           <div className="mt-8 text-center">

@@ -29,8 +29,6 @@ export const StoreHeader = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-    const [alterSearch, setAlterSearch] = useState(false);
-
     const handleLogout = () => {
         setIsProfileOpen(false);
         logOut();
@@ -85,7 +83,7 @@ export const StoreHeader = () => {
                             {user ? (
                                 <>
                                     <button
-                                        onClick={() => { setIsProfileOpen(!isProfileOpen); setIsMenuOpen(false); setAlterSearch(false); }}
+                                        onClick={() => { setIsProfileOpen(!isProfileOpen); setIsMenuOpen(false); }}
                                         className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-50 transition-all focus:outline-none"
                                     >
                                         <img
@@ -128,7 +126,7 @@ export const StoreHeader = () => {
                         </div>
 
                         <button
-                            onClick={() => { setIsMenuOpen(!isMenuOpen); setIsProfileOpen(false); setAlterSearch(false); }}
+                            onClick={() => { setIsMenuOpen(!isMenuOpen); setIsProfileOpen(false); }}
                             className="sm:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                         >
                             {isMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
