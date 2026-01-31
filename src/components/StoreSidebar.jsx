@@ -23,14 +23,29 @@ export const StoreSidebar = ({ isOpen, onClose }) => {
                         className="fixed inset-0 bg-gray-900/20 backdrop-blur-md z-40 transition-opacity"
                     />
 
-                    {/* Sidebar: Alineado al diseño de MiStore */}
+                    {/* Sidebar: Alineado al diseño de MiStore con funcionalidad Drag */}
                     <motion.nav
+                        // Funcionalidad de arrastre
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={{ left: 0, right: 0.5 }}
+                        onDragEnd={(event, info) => {
+                            // Si se arrastra más de 100px hacia la derecha, se cierra
+                            if (info.offset.x > 100) {
+                                onClose();
+                            }
+                        }}
                         initial={{ x: '100%' }}
                         animate={{ x: 0 }}
                         exit={{ x: '100%' }}
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                        className="fixed top-20 right-0 h-[calc(100vh-80px)] w-[80vw] md:w-[380px] bg-white/90 backdrop-blur-lg z-50 flex flex-col shadow-2xl border-l border-gray-100"
+                        className="fixed top-20 right-0 h-[calc(100vh-80px)] w-[80vw] md:w-[380px] bg-white/90 backdrop-blur-lg z-50 flex flex-col shadow-2xl border-l border-gray-100 touch-none"
                     >
+                        {/* Indicador visual de arrastre para móviles */}
+                        <div className="md:hidden flex justify-center pt-2">
+                            <div className="w-10 h-1 bg-gray-300 rounded-full" />
+                        </div>
+
                         {/* Header del Sidebar - Estilo consistente con el Logo */}
                         <div className="flex items-center justify-between p-6 border-b border-gray-100">
                             <div className="flex items-center gap-3">
@@ -41,7 +56,10 @@ export const StoreSidebar = ({ isOpen, onClose }) => {
                                     Panel <span className="text-blue-600">Gestión</span>
                                 </h2>
                             </div>
-
+                            {/* Botón X opcional para cierre manual rápido */}
+                            <button onClick={onClose} className="p-2 text-gray-400 md:hidden">
+                                <XMarkIcon className="w-6 h-6" />
+                            </button>
                         </div>
 
                         {/* Cuerpo - Enlaces con estilo de lista moderna */}
