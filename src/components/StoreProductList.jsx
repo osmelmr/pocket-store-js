@@ -3,6 +3,9 @@ import { useAllProducts } from "../hooks/useProducts"
 import { useUiProducts } from "../zustand/productsStore"
 import { useCart } from "../zustand/useCart"
 import { useProductFilters } from "../hooks/useProductFilters"
+import {
+    TrashIcon
+} from "@heroicons/react/24/outline";
 
 export const StoreProductList = () => {
     const { quantityP, lessFromCart, addToCart } = useCart()
@@ -25,7 +28,7 @@ export const StoreProductList = () => {
     }
 
     return (
-        <>
+        <div className="px-4">
             {/* Info */}
             <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">
@@ -86,56 +89,60 @@ export const StoreProductList = () => {
                                         }
                                     </p>
                                 </div>
-
-                                <button
-                                    disabled={!p.stock}
-                                    onClick={() => addToCart(p.id)}
-                                    className={`px-4 py-2 rounded-lg flex items-center text-white ${p.stock ? "hover:bg-blue-700  bg-blue-600" : "hover:bg-grey-600  bg-gray-500 "}`} >
-                                    <svg
-                                        className="w-4 h-4 mr-2"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
+                                {quantityP(p.id) < 1 ? (
+                                    <button
+                                        disabled={!p.stock}
+                                        onClick={() => addToCart(p.id)}
+                                        className={`px-4 py-2 rounded-lg flex items-center text-white transition-all active:scale-95 ${p.stock ? "bg-blue-600 hover:bg-blue-700 shadow-sm" : "bg-gray-400 cursor-not-allowed"
+                                            }`}
                                     >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                        />
-                                    </svg>
-                                    Agregar
-                                </button>
-                            </div>
-                            {quantityP(p.id) > 0 &&
-                                <div className="mt-3 p-2 bg-blue-50 rounded-lg">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-sm text-blue-700">
-                                            {quantityP(p.id) || "0"} unidades en
-                                            el carrito
-                                        </span>
-                                        <div className="flex items-center space-x-2">
+                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                        <span className="text-sm font-semibold">Agregar</span>
+                                    </button>
+                                ) : (
+                                    <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden shadow-sm bg-white">
+                                        {/* Botón Menos */}
+                                        {quantityP(p.id) == 1 ?
                                             <button
                                                 onClick={() => lessFromCart(p.id)}
-                                                className="w-6 h-6 flex items-center justify-center bg-red-100 text-red-600 rounded hover:bg-red-200"
+                                                className="w-7 h-10 flex items-center justify-center text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all border-r border-gray-100 group"
                                             >
-                                                -
+                                                <TrashIcon className="w-4 h-4 transition-transform group-hover:scale-110" />
                                             </button>
+                                            :
                                             <button
-                                                disabled={!p.stock}
-                                                onClick={() => { addToCart(p.id) }}
-                                                className="w-6 h-6 flex items-center justify-center bg-green-100 text-green-600 rounded hover:bg-green-200 disabled:opacity-50"
+                                                onClick={() => lessFromCart(p.id)}
+                                                className="w-7 h-10 flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-red-500 transition-colors "
                                             >
-                                                +
-                                            </button>
+                                                <span className="text-lg font-medium">−</span>
+                                            </button>}
+
+                                        {/* Cantidad */}
+                                        <div className="px-4 min-w-[3rem] text-center">
+                                            <span className="text-sm font-bold text-gray-800">
+                                                {quantityP(p.id)}
+                                            </span>
                                         </div>
+
+                                        {/* Botón Más */}
+                                        <button
+                                            disabled={!p.stock}
+                                            onClick={() => addToCart(p.id)}
+                                            className="w-7 h-10 flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors  disabled:opacity-30"
+                                        >
+                                            <span className="text-lg font-medium">+</span>
+                                        </button>
                                     </div>
-                                </div>}
+                                )}
+                            </div>
+
                         </div>
                     </div>
                 ))}
 
             </div>
-        </>
+        </div>
     )
 }
