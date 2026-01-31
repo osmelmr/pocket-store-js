@@ -26,13 +26,13 @@ export const StoreProductList = () => {
     }
 
     return (
-        <div className="px-4 md:px-8 lg:px-16">
+        <div className="px-4 md:px-8 lg:px-16 transition-colors duration-300">
             {/* Info */}
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
                     Nuestros Productos
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400">
                     12 productos disponibles
                 </p>
             </div>

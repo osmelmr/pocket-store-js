@@ -4,17 +4,19 @@ export const ProductCart = ({ product, quantityP, addToCart, lessFromCart }) => 
     const p = product;
 
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="relative h-48 bg-gray-100">
+        <div className="bg-white dark:bg-slate-800 rounded-lg overflow-hidden border border-gray-100 dark:border-slate-700 shadow-md hover:shadow-lg dark:hover:border-slate-600 transition-all">
+            <div className="relative h-48 bg-gray-100 dark:bg-slate-900">
                 <img
                     src={p.image ? p.image : "https://placehold.co/300x300"}
                     alt="Producto"
                     className="w-full h-full object-cover"
                 />
-                <span className="absolute top-2 left-2 px-2 py-1 text-xs font-medium bg-white/90 text-gray-800 rounded">
+                {/* Badge Categoría - Sólido en dark */}
+                <span className="absolute top-2 left-2 px-2 py-1 text-xs font-medium bg-white/90 dark:bg-slate-800 text-gray-800 dark:text-gray-200 rounded shadow-sm">
                     {p.category_name ? p.category_name : "Unknown"}
                 </span>
-                <span className="absolute top-2 right-2 px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded flex items-center">
+                {/* Badge Rating */}
+                <span className="absolute top-2 right-2 px-2 py-1 text-xs font-medium bg-yellow-100  text-yellow-800  rounded flex items-center shadow-sm">
                     <svg
                         className="w-3 h-3 mr-1"
                         fill="currentColor"
@@ -27,33 +29,36 @@ export const ProductCart = ({ product, quantityP, addToCart, lessFromCart }) => 
             </div>
 
             <div className="p-4">
-                <h3 className="font-semibold text-gray-800 truncate">
+                <h3 className="font-semibold text-gray-800 dark:text-gray-100 truncate">
                     {p.name ? p.name : "Unknown"}
                 </h3>
-                <p className="text-sm text-gray-600 mt-1 line-clamp-2 h-10">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2 h-10">
                     {p.description ? p.description : "Unknown"}
                 </p>
 
                 <div className="mt-4 flex items-center justify-between">
                     <div>
-                        <span className="text-lg font-bold text-gray-900">
+                        <span className="text-lg font-bold text-gray-900 dark:text-white">
                             ${p.price ? p.price : "NaN"}
                         </span>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs mt-1">
                             {p.stock ?
-                                <span className="text-green-600">
+                                <span className="text-green-600 dark:text-green-500 font-medium">
                                     ✓ Stock ({p.stock} disponibles)
                                 </span>
                                 :
-                                <span className="text-red-600">✗ Agotado</span>
+                                <span className="text-red-600 dark:text-red-400 font-medium">✗ Agotado</span>
                             }
                         </p>
                     </div>
+
                     {quantityP(p.id) < 1 ? (
                         <button
                             disabled={!p.stock}
                             onClick={() => addToCart(p.id)}
-                            className={`px-4 py-2 rounded-lg flex items-center text-white transition-all active:scale-95 ${p.stock ? "bg-blue-600 hover:bg-blue-700 shadow-sm" : "bg-gray-400 cursor-not-allowed"
+                            className={`px-4 py-2 rounded-lg flex items-center text-white transition-all active:scale-95 ${p.stock
+                                ? "bg-blue-600 hover:bg-blue-700 shadow-sm dark:shadow-none"
+                                : "bg-gray-400 dark:bg-slate-700 dark:text-gray-500 cursor-not-allowed"
                                 }`}
                         >
                             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,26 +67,25 @@ export const ProductCart = ({ product, quantityP, addToCart, lessFromCart }) => 
                             <span className="text-sm font-semibold">Agregar</span>
                         </button>
                     ) : (
-                        <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden shadow-sm bg-white">
+                        <div className="flex items-center border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden shadow-sm bg-white dark:bg-slate-900">
                             {/* Botón Menos */}
-                            {quantityP(p.id) == 1 ?
-                                <button
-                                    onClick={() => lessFromCart(p.id)}
-                                    className="w-7 h-10 flex items-center justify-center text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all border-r border-gray-100 group"
-                                >
-                                    <TrashIcon className="w-4 h-4 transition-transform group-hover:scale-110" />
-                                </button>
-                                :
-                                <button
-                                    onClick={() => lessFromCart(p.id)}
-                                    className="w-7 h-10 flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-red-500 transition-colors "
-                                >
+                            <button
+                                onClick={() => lessFromCart(p.id)}
+                                className={`w-7 h-10 flex items-center justify-center transition-all border-r border-gray-100 dark:border-slate-700 ${quantityP(p.id) === 1
+                                    ? "text-gray-400 dark:text-gray-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500"
+                                    : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800"
+                                    }`}
+                            >
+                                {quantityP(p.id) === 1 ? (
+                                    <TrashIcon className="w-4 h-4" />
+                                ) : (
                                     <span className="text-lg font-medium">−</span>
-                                </button>}
+                                )}
+                            </button>
 
                             {/* Cantidad */}
                             <div className="px-4 min-w-[3rem] text-center">
-                                <span className="text-sm font-bold text-gray-800">
+                                <span className="text-sm font-bold text-gray-800 dark:text-gray-200">
                                     {quantityP(p.id)}
                                 </span>
                             </div>
@@ -90,7 +94,7 @@ export const ProductCart = ({ product, quantityP, addToCart, lessFromCart }) => 
                             <button
                                 disabled={!p.stock}
                                 onClick={() => addToCart(p.id)}
-                                className="w-7 h-10 flex items-center justify-center text-blue-600 hover:bg-blue-50 transition-colors  disabled:opacity-30"
+                                className="w-7 h-10 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors disabled:opacity-30"
                             >
                                 <span className="text-lg font-medium">+</span>
                             </button>

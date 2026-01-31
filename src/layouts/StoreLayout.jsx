@@ -15,7 +15,7 @@ export const StoreLayout = () => {
         <>
             <StoreHeader />
 
-            <div className="relative">
+            <div className="relative sm:mb-25 mb-50">
                 <HeaderFilters isFiltersVisible={isFiltersVisible} />
             </div>
 
