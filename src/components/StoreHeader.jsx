@@ -29,21 +29,46 @@ export const StoreHeader = () => {
     const isSidebarOpen = useSidebar(state => state.isSidebarOpen);
     const toggleSidebar = useSidebar(state => state.toggleSidebar);
     const [closerFilters, setCloserFilters] = useState(false);
+    const [openFilters, setOpenFilters] = useState(false);
     const [isManuallyOpenedOnMobile, setIsManuallyOpenedOnMobile] = useState(false);
 
-    const { scrollY } = useScroll();
 
+    const { scrollY } = useScroll();
+    useEffect(() => {
+        // Resetear el estado cuando se abre el sidebar (móvil)
+        if (!isSidebarOpen && closerFilters) {
+            setIsFiltersVisible(true);
+        }
+        if ((!openFilters && !closerFilters) && !isSidebarOpen) {
+            setIsFiltersVisible(true);
+        }
+
+    }, [isSidebarOpen]);
     useMotionValueEvent(scrollY, "change", (latest) => {
         // No aplicar scroll automático si los filtros fueron abiertos manualmente en móvil
-        if (isManuallyOpenedOnMobile) return;
+        if (isManuallyOpenedOnMobile) {
+            if (latest < 80) {
+                setIsManuallyOpenedOnMobile(prev => !prev)
+                setCloserFilters(false)
+            };
+            return
+        };
 
         // Solo escondemos automáticamente si el usuario baja de 80px
         // No forzamos "true" si el usuario lo cerró manualmente (opcional)
         if (latest > 80) {
-            if (isFiltersVisible) setIsFiltersVisible(false);
+            if (isFiltersVisible) {
+                setIsFiltersVisible(false);
+                setOpenFilters(true);
+
+            };
         } else {
-            if (!isFiltersVisible) { setIsFiltersVisible(true); setCloserFilters(false); };
+            if (!isFiltersVisible) {
+                setIsFiltersVisible(true);
+                setOpenFilters(false);
+            };
         }
+        setCloserFilters(false);
     });
 
     useEffect(() => {
@@ -98,14 +123,16 @@ export const StoreHeader = () => {
                         <div className="flex items-center justify-center md:w-24 ">
                             {/* BOTÓN DE FILTROS: Aparece solo cuando los filtros están ocultos */}
                             <AnimatePresence>
-                                {!isFiltersVisible ? (
+                                {openFilters && !isSidebarOpen ? (
                                     <motion.button
+
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.8 }}
                                         onClick={() => {
                                             setIsFiltersVisible(true);
                                             setCloserFilters(true);
+                                            setOpenFilters(false);
                                             setIsManuallyOpenedOnMobile(true);
                                         }}
                                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors flex items-center gap-1"
@@ -114,13 +141,16 @@ export const StoreHeader = () => {
                                         <AdjustmentsHorizontalIcon className="w-6 h-6" />
                                         <span className="hidden md:block text-xs font-bold uppercase tracking-wider">Filtros</span>
                                     </motion.button>
-                                ) : closerFilters && (
+                                ) : closerFilters && !isSidebarOpen && (
                                     <motion.button
+
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.8 }}
                                         onClick={() => {
                                             setIsFiltersVisible(false);
+                                            setOpenFilters(true);
+                                            setCloserFilters(false);
                                             setIsManuallyOpenedOnMobile(false);
                                         }}
                                         className="p-2 text-gray-600 hover:bg-blue-50 rounded-full transition-colors flex items-center gap-1"
