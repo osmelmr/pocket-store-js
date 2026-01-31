@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+﻿/* eslint-disable no-unused-vars */
 import { useCart } from "../zustand/useCart";
 import { Link, useNavigate } from "react-router";
 import { useAuthContext } from "../hooks/useAuth";
@@ -115,12 +115,14 @@ export const StoreHeader = () => {
                     <div className="hidden sm:block flex-1 max-w-lg mx-8">
                         <SearchFilter />
                     </div>
-                    <Link to="/admin" className="hidden sm:block text-sm font-semibold text-gray-600 hover:text-blue-600 transition-colors">
-                        Admin
-                    </Link>
+
                     {/* Acciones */}
                     <div className="flex items-center gap-2 md:gap-4">
+
                         <div className="flex items-center justify-center md:w-24 ">
+                            <Link to="/admin" className="hidden sm:block text-sm font-semibold text-gray-600 hover:text-blue-600 transition-colors">
+                                Admin
+                            </Link>
                             {/* BOTÓN DE FILTROS: Aparece solo cuando los filtros están ocultos */}
                             <AnimatePresence>
                                 {openFilters && !isSidebarOpen ? (

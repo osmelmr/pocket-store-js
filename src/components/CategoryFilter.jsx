@@ -24,7 +24,7 @@ export const CategoryFilter = () => {
     };
 
     return (
-        <div className="relative w-full">
+        <div className="relative w-full hover:shadow-sm">
             {/* Botón Principal */}
             <button
                 onClick={() => setIsOpen(!isOpen)}

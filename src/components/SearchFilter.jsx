@@ -22,7 +22,7 @@ export const SearchFilter = () => {
                 onChange={filtered}
                 type="text"
                 placeholder="Buscar por nombre o descripción..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all shadow-sm hover:border-blue-500 hover:shadow-sm"
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 md:border-gray-300 rounded-xl sm:rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all  hover:border-blue-500 hover:shadow-sm"
             />
 
             {/* Icono posicionado a la izquierda (left-3). 
