@@ -7,6 +7,8 @@ import { useState, useRef, useEffect } from "react";
 import { CategoryFilter } from "./CategoryFilter";
 import { OrderFilter } from "./OrderFilter";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { HeaderFilters } from "./HeaderFilters";
+import { useVisibleFilters } from "../zustand/useVisibleFilers";
 
 import {
     ShoppingBagIcon,
@@ -23,7 +25,11 @@ export const StoreHeader = () => {
     const { allStock } = useCart();
     const { user, logOut } = useAuthContext();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
-    const [isFiltersVisible, setIsFiltersVisible] = useState(true);
+
+    const isFiltersVisible = useVisibleFilters(state => state.isFiltersVisible);
+    const showFilters = useVisibleFilters(state => state.showFilters);
+    const hideFilters = useVisibleFilters(state => state.hideFilters);
+
     const profileRef = useRef(null);
 
     const isSidebarOpen = useSidebar(state => state.isSidebarOpen);
@@ -37,10 +43,10 @@ export const StoreHeader = () => {
     useEffect(() => {
         // Resetear el estado cuando se abre el sidebar (móvil)
         if (!isSidebarOpen && closerFilters) {
-            setIsFiltersVisible(true);
+            showFilters();
         }
         if ((!openFilters && !closerFilters) && !isSidebarOpen) {
-            setIsFiltersVisible(true);
+            showFilters();
         }
 
     }, [isSidebarOpen]);
@@ -58,13 +64,13 @@ export const StoreHeader = () => {
         // No forzamos "true" si el usuario lo cerró manualmente (opcional)
         if (latest > 80) {
             if (isFiltersVisible) {
-                setIsFiltersVisible(false);
+                hideFilters();
                 setOpenFilters(true);
 
             };
         } else {
             if (!isFiltersVisible) {
-                setIsFiltersVisible(true);
+                showFilters();
                 setOpenFilters(false);
             };
         }
@@ -97,7 +103,8 @@ export const StoreHeader = () => {
     };
 
     return (
-        <header className={`bg-white/80 backdrop-blur-md ${!isFiltersVisible ? "shadow-sm" : ""} sticky top-0 z-50 h-20 mb-50 md:mb-25`}>
+        <header className={`bg-white/80 backdrop-blur-md ${!isFiltersVisible ? "shadow-sm" : ""} sticky top-0 z-50 h-20  `}>
+
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
                 <div className="flex justify-between items-center h-20">
 
@@ -132,7 +139,7 @@ export const StoreHeader = () => {
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.8 }}
                                         onClick={() => {
-                                            setIsFiltersVisible(true);
+                                            showFilters();
                                             setCloserFilters(true);
                                             setOpenFilters(false);
                                             setIsManuallyOpenedOnMobile(true);
@@ -150,7 +157,7 @@ export const StoreHeader = () => {
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.8 }}
                                         onClick={() => {
-                                            setIsFiltersVisible(false);
+                                            hideFilters();
                                             setOpenFilters(true);
                                             setCloserFilters(false);
                                             setIsManuallyOpenedOnMobile(false);
@@ -213,7 +220,7 @@ export const StoreHeader = () => {
                             )}
                         </div>
                         <button
-                            onClick={() => { toggleSidebar(); setIsProfileOpen(false); setIsFiltersVisible(false); }}
+                            onClick={() => { toggleSidebar(); setIsProfileOpen(false); hideFilters(); }}
                             className="sm:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                         >
                             {isSidebarOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
@@ -223,31 +230,7 @@ export const StoreHeader = () => {
             </div>
 
             {/* Panel de Filtros Flotante */}
-            <AnimatePresence>
-                {isFiltersVisible && (
-                    <motion.div
-                        initial={{ y: -50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -50, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="absolute top-20 left-0 w-full bg-white/80 backdrop-blur-md shadow-md z-10"
-                    >
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                            <div className="flex flex-col md:flex-row gap-4 md:justify-between">
-                                <div className="sm:hidden w-full md:w-48 bg-white rounded-lg">
-                                    <SearchFilter />
-                                </div>
-                                <div className="w-full md:w-48">
-                                    <CategoryFilter className="" />
-                                </div>
-                                <div className="w-full md:w-48">
-                                    <OrderFilter className="" />
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {/* <HeaderFilters isFiltersVisible={isFiltersVisible} /> */}
         </header>
     );
 };
