@@ -12,8 +12,11 @@ import {
     ShoppingBagIcon,
     ShoppingCartIcon,
     AdjustmentsHorizontalIcon, // Icono de filtros
-    ArrowLeftOnRectangleIcon
+    ArrowLeftOnRectangleIcon,
+    Bars3Icon,
+    XMarkIcon
 } from "@heroicons/react/24/outline";
+import { useSidebar } from "../zustand/useSidebar";
 
 export const StoreHeader = () => {
     const navigate = useNavigate();
@@ -23,6 +26,8 @@ export const StoreHeader = () => {
     const [isFiltersVisible, setIsFiltersVisible] = useState(true);
     const profileRef = useRef(null);
 
+    const isSidebarOpen = useSidebar(state => state.isSidebarOpen);
+    const toggleSidebar = useSidebar(state => state.toggleSidebar);
     const [closerFilters, setCloserFilters] = useState(false);
     const [isManuallyOpenedOnMobile, setIsManuallyOpenedOnMobile] = useState(false);
 
@@ -85,7 +90,9 @@ export const StoreHeader = () => {
                     <div className="hidden sm:block flex-1 max-w-lg mx-8">
                         <SearchFilter />
                     </div>
-
+                    <Link to="/admin" className="hidden sm:block text-sm font-semibold text-gray-600 hover:text-blue-600 transition-colors">
+                        Admin
+                    </Link>
                     {/* Acciones */}
                     <div className="flex items-center gap-2 md:gap-4">
                         <div className="flex items-center justify-center md:w-24 ">
@@ -173,6 +180,12 @@ export const StoreHeader = () => {
                                 </Link>
                             )}
                         </div>
+                        <button
+                            onClick={() => { toggleSidebar(); setIsProfileOpen(false); setIsFiltersVisible(false); }}
+                            className="sm:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                            {isSidebarOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
+                        </button>
                     </div>
                 </div>
             </div>

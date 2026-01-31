@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useFilters } from "../zustand/productsStore"
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
