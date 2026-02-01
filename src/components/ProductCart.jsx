@@ -56,7 +56,7 @@ export const ProductCart = ({ product, quantityP, addToCart, lessFromCart, openP
                     {quantityP(p.id) < 1 ? (
                         <button
                             disabled={!p.stock}
-                            onClick={() => addToCart(p.id)}
+                            onClick={(e) => { addToCart(p.id); e.stopPropagation(); }}
                             className={`px-4 py-2 rounded-lg flex items-center text-white transition-all active:scale-95 ${p.stock
                                 ? "bg-blue-600 hover:bg-blue-700 shadow-sm dark:shadow-none"
                                 : "bg-gray-400 dark:bg-slate-700 dark:text-gray-500 cursor-not-allowed"
@@ -71,7 +71,7 @@ export const ProductCart = ({ product, quantityP, addToCart, lessFromCart, openP
                         <div className="flex items-center border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden shadow-sm bg-white dark:bg-slate-900">
                             {/* Botón Menos */}
                             <button
-                                onClick={() => lessFromCart(p.id)}
+                                onClick={(e) => { lessFromCart(p.id); e.stopPropagation(); }}
                                 className={`w-7 h-10 flex items-center justify-center transition-all border-r border-gray-100 dark:border-slate-700 ${quantityP(p.id) === 1
                                     ? "text-gray-400 dark:text-gray-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500"
                                     : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800"
@@ -94,7 +94,7 @@ export const ProductCart = ({ product, quantityP, addToCart, lessFromCart, openP
                             {/* Botón Más */}
                             <button
                                 disabled={!p.stock}
-                                onClick={() => addToCart(p.id)}
+                                onClick={(e) => { addToCart(p.id); e.stopPropagation(); }}
                                 className="w-7 h-10 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors disabled:opacity-30"
                             >
                                 <span className="text-lg font-medium">+</span>
