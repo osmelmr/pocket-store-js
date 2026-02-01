@@ -1,236 +1,142 @@
 import { useAuthContext } from "../hooks/useAuth";
 import { useNavigate } from "react-router";
-import { useState } from "react"
+import { useState } from "react";
 import { useToast } from "../zustand/useToast";
+import { EnvelopeIcon, LockClosedIcon, ShoppingBagIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export const Login = () => {
   const { showToast } = useToast();
-  const navigate = useNavigate()
-  const { login } = useAuthContext()
+  const navigate = useNavigate();
+  const { login } = useAuthContext();
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const onChange = (e) => {
-    console.log(e.target.name, e.target.value)
-    if (e.target.name == "email") {
-      setEmail(e.target.value)
+    if (e.target.name === "email") {
+      setEmail(e.target.value);
     }
-    if (e.target.name == "password") {
-      setPassword(e.target.value)
+    if (e.target.name === "password") {
+      setPassword(e.target.value);
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      console.log(email, password)
-      await login({ email, password })
-      navigate("/")
+      await login({ email, password });
+      navigate("/");
       showToast("Inicio de sesión exitoso", "success");
     } catch (error) {
-      showToast("Error al iniciar sesión. Revisa tus credenciales.", "error");
-      console.log(error)
+      showToast("Error al iniciar sesión. Revisa tus credenciales.", error.response?.data?.message || "error");
     }
-
-  }
+  };
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          {/* Logo */}
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
-              <svg
-                className="w-8 h-8 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-slate-50 to-gray-100 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 transition-colors duration-300">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        {/* Logo Section */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-blue-200/50 dark:shadow-none mb-4 transform rotate-6 transition-transform hover:rotate-0 border border-transparent dark:border-slate-700">
+            <ShoppingBagIcon className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+          </div>
+          <h2 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight italic">
+            Mi Tienda
+          </h2>
+          <p className="mt-2 text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
+            Panel de Administración
+          </p>
+        </div>
+
+        {/* Card del login */}
+        <div className="bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl py-8 px-4 shadow-2xl border border-white dark:border-slate-800 sm:rounded-[2rem] sm:px-10 transition-colors">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email */}
+            <div className="space-y-1">
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 ml-1 italic">
+                Email
+              </label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <EnvelopeIcon className="h-5 w-5 text-gray-400 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400 transition-colors" />
+                </div>
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={onChange}
+                  className="block w-full pl-10 pr-3 py-2.5 rounded-xl transition-all outline-none sm:text-sm bg-gray-50 dark:bg-slate-900 dark:text-white border border-gray-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-50/50 dark:focus:ring-blue-900/20 focus:border-blue-600 dark:focus:border-blue-500"
+                  placeholder="tu@email.com"
                 />
-              </svg>
-            </div>
-            <h2 className="text-3xl font-extrabold text-gray-900">Mi Tienda</h2>
-            <p className="mt-2 text-sm text-gray-600">Panel de Administración</p>
-          </div>
-
-          {/* Card del login */}
-          <div onSubmit={handleSubmit} className="mt-8 bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
-            <form className="space-y-6">
-              {/* Email */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Email
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={onChange}
-                    autoComplete="email"
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm text-gray-900"
-                    placeholder="tu@email.com"
-                  />
-                </div>
-              </div>
-
-              {/* Contraseña */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Contraseña
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={onChange}
-                    autoComplete="current-password"
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm text-gray-900"
-                    placeholder="••••••••"
-                  />
-                </div>
-              </div>
-
-
-
-              {/* Botón de login */}
-              <div>
-                <button
-                  type="submit"
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Iniciar Sesión
-                </button>
-              </div>
-            </form>
-
-            {/* Demo Login */}
-            {/* <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">
-                    Acceso rápido
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <button
-                  type="button"
-                  className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2 text-blue-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
-                  Usar credenciales de demostración
-                </button>
-              </div>
-            </div> */}
-
-            {/* Info adicional */}
-            {/* <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-              <div className="flex">
-                <svg
-                  className="w-5 h-5 text-blue-600 mr-2 mt-0.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <div>
-                  <p className="text-sm text-blue-800">
-                    <strong>Demo:</strong> Usa cualquier email y contraseña, o haz
-                    clic en "Usar credenciales de demostración".
-                  </p>
-                  <p className="text-sm text-blue-700 mt-1">
-                    En una aplicación real, aquí se conectaría a tu backend Django
-                    con autenticación real.
-                  </p>
-                </div>
-              </div>
-            </div> */}
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
-                ¿No tienes una cuenta?{" "}
-                <button
-                  onClick={() => navigate("/register")}
-                  className="font-medium text-blue-600 hover:text-blue-500"
-                >
-                  Regístrate aquí
-                </button>
-              </p>
-              <div className="mt-4">
-                <button
-                  onClick={() => navigate("/")}
-                  className="text-sm text-gray-600 hover:text-gray-900 flex items-center justify-center mx-auto"
-                >
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                    />
-                  </svg>
-                  Ver tienda pública
-                </button>
               </div>
             </div>
-          </div>
 
-          {/* Enlaces adicionales */}
+            {/* Contraseña */}
+            <div className="space-y-1">
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 ml-1 italic">
+                Contraseña
+              </label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <LockClosedIcon className="h-5 w-5 text-gray-400 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400 transition-colors" />
+                </div>
+                <input
+                  name="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={onChange}
+                  className="block w-full pl-10 pr-3 py-2.5 rounded-xl transition-all outline-none sm:text-sm bg-gray-50 dark:bg-slate-900 dark:text-white border border-gray-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-blue-50/50 dark:focus:ring-blue-900/20 focus:border-blue-600 dark:focus:border-blue-500"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
 
+            {/* Botón de login */}
+            <div className="pt-2">
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg shadow-blue-200 dark:shadow-none transition-all active:scale-[0.98] flex items-center justify-center"
+              >
+                Iniciar Sesión
+              </button>
+            </div>
+          </form>
 
-          {/* Footer informativo */}
-          <div className="mt-8 text-center">
-            <p className="text-xs text-gray-500">
-              © {new Date().getFullYear()} Mi Tienda. Panel de administración.
-              <br />
-              Esta es una aplicación demo. Los datos son temporales.
+          {/* Registro link */}
+          <div className="mt-8 text-center border-t border-gray-100 dark:border-slate-800 pt-6">
+            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium italic">
+              ¿No tienes una cuenta?{" "}
+              <button
+                onClick={() => navigate("/register")}
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 font-bold underline decoration-2 underline-offset-4"
+              >
+                Regístrate aquí
+              </button>
             </p>
+
+            <div className="mt-4">
+              <button
+                onClick={() => navigate("/")}
+                className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center justify-center mx-auto transition-colors"
+              >
+                <ArrowLeftIcon className="w-4 h-4 mr-2" />
+                Ver tienda pública
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Footer informativo */}
+        <div className="mt-8 text-center px-4">
+          <p className="text-[10px] uppercase tracking-widest text-gray-500 dark:text-gray-500 font-bold">
+            © {new Date().getFullYear()} Mi Tienda • Sistema de Inventario
+            <br />
+            <span className="normal-case font-medium opacity-60 italic">Los datos son temporales • Ambiente de desarrollo</span>
+          </p>
+        </div>
       </div>
-    </>
+    </div>
   );
 };

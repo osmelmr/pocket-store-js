@@ -23,7 +23,7 @@ export const Toast = () => {
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: 300, opacity: 0 }}
                     transition={{ duration: 0.5 }}
-                    className={`flex items-center fixed bottom-4 right-4 w-60 h-14 ${type == "success" ? 'bg-green-600' : 'bg-red-600'} text-white px-4 py-2 rounded shadow-lg`}
+                    className={`flex items-center fixed bottom-4 right-4 w-60 h-14 ${type == "success" ? 'bg-green-600' : 'bg-red-600'} text-white px-4 py-2 rounded shadow-lg z-50`}
                 >
                     <p>{message}</p>
                 </motion.div>

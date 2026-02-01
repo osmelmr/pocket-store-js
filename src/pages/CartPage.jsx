@@ -9,51 +9,25 @@ import {
 import { useCart } from "../zustand/useCart";
 
 export const CartPage = () => {
-    // --- MOCKS (Sustituye esto por tu lógica de Zustand después) ---
-    // const cart = [
-    //     {
-    //         id: 1,
-    //         name: "iPhone 15 Pro - Titanium Blue",
-    //         price: 999.00,
-    //         quantity: 1,
-    //         image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?q=80&w=250&auto=format&fit=crop"
-    //     },
-    //     {
-    //         id: 2,
-    //         name: "Sony WH-1000XM5 Noise Cancelling",
-    //         price: 349.50,
-    //         quantity: 2,
-    //         image: "https://images.unsplash.com/photo-1644734567652-2b074fd05abb?q=80&w=250&auto=format&fit=crop"
-    //     },
-    //     {
-    //         id: 3,
-    //         name: "MacBook Air M2 - Space Gray",
-    //         price: 1199.00,
-    //         quantity: 1,
-    //         image: "https://images.unsplash.com/photo-1611186871348-b1ec696e52c9?q=80&w=250&auto=format&fit=crop"
-    //     }
-    // ];
     const { cart, addToCart, lessFromCart, removeFromCart: remove } = useCart();
 
     const getTotalPrice = () => {
         return cart.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2);
     };
 
-    // Funciones dummy para que el onClick no de error
-    const removeThisFromCart = (id) => { console.log("Eliminar producto:", id); remove(id) };
-    const removeFromCart = (id) => { console.log("Eliminar producto:", id); lessFromCart(id) };
-    const updateQuantity = (id, q) => { console.log("Nueva cantidad para", id, ":", q); addToCart(id) };
-    // ----------------------------------------------------------------
+    const removeThisFromCart = (id) => { remove(id) };
+    const removeFromCart = (id) => { lessFromCart(id) };
+    const updateQuantity = (id) => { addToCart(id) };
 
     if (cart.length === 0) {
         return (
-            <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
-                <div className="p-6 bg-gray-50 rounded-full mb-4">
-                    <ShoppingBagIcon className="w-12 h-12 text-gray-400" />
+            <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 transition-colors">
+                <div className="p-6 bg-gray-50 dark:bg-slate-800 rounded-full mb-4 border border-transparent dark:border-slate-700">
+                    <ShoppingBagIcon className="w-12 h-12 text-gray-400 dark:text-slate-500" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Tu carrito está vacío</h2>
-                <p className="text-gray-500 mb-8 text-center">Parece que aún no has añadido nada a tu selección.</p>
-                <Link to="/" className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Tu carrito está vacío</h2>
+                <p className="text-gray-500 dark:text-gray-400 mb-8 text-center">Parece que aún no has añadido nada a tu selección.</p>
+                <Link to="/" className="flex items-center gap-2 bg-blue-600 dark:bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 dark:hover:bg-blue-500 transition-all active:scale-95">
                     <ArrowLeftIcon className="w-5 h-5" />
                     Volver a la tienda
                 </Link>
@@ -62,61 +36,60 @@ export const CartPage = () => {
     }
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-white">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Tu Carrito</h1>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-white dark:bg-transparent transition-colors">
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white mb-8 italic uppercase tracking-tight">Tu Carrito</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 {/* Lista de Productos */}
                 <div className="lg:col-span-2 space-y-4">
                     {cart.map((product) => (
-                        <div key={product.id} className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                        <div key={product.id} className="flex items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:hover:border-slate-700 transition-all">
                             <img
                                 src={product.image}
                                 alt={product.name}
-                                className="w-20 h-20 sm:w-28 sm:h-28 object-cover rounded-xl bg-gray-50"
+                                className="w-20 h-20 sm:w-28 sm:h-28 object-cover rounded-xl bg-gray-50 dark:bg-slate-800"
                             />
 
                             <div className="flex-1 min-w-0">
                                 <div className="flex justify-between items-start gap-2">
-                                    <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
+                                    <h3 className="font-bold text-gray-900 dark:text-slate-100 text-sm sm:text-base truncate">
                                         {product.name}
                                     </h3>
                                     <button
                                         onClick={() => removeThisFromCart(product.id)}
-                                        className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                                        className="text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors p-1"
                                     >
                                         <TrashIcon className="w-5 h-5" />
                                     </button>
                                 </div>
 
-                                <p className="text-blue-600 font-bold mt-1 text-lg">
+                                <p className="text-blue-600 dark:text-blue-400 font-black mt-1 text-lg">
                                     ${product.price.toFixed(2)}
                                 </p>
 
                                 <div className="flex items-center justify-between mt-3">
                                     {/* Control de Cantidad */}
-                                    <div className="flex items-center bg-gray-50 rounded-lg border border-gray-200">
+                                    <div className="flex items-center bg-gray-50 dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 overflow-hidden">
                                         <button
                                             onClick={() => removeFromCart(product.id)}
-                                            className="p-1.5 hover:bg-gray-200 text-gray-600 transition-colors disabled:opacity-30"
+                                            className="p-1.5 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-600 dark:text-slate-300 transition-colors disabled:opacity-30"
                                             disabled={product.quantity < 1}
                                         >
                                             <MinusSmallIcon className="w-4 h-4" />
                                         </button>
-                                        <span className="px-3 text-sm font-bold text-gray-700">
+                                        <span className="px-3 text-sm font-black text-gray-700 dark:text-white border-x dark:border-slate-700">
                                             {product.quantity}
                                         </span>
                                         <button
-                                            onClick={() => updateQuantity(product.id, product.quantity + 1)}
-                                            className="p-1.5 hover:bg-gray-200 text-gray-600 transition-colors"
+                                            onClick={() => updateQuantity(product.id)}
+                                            className="p-1.5 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-600 dark:text-slate-300 transition-colors"
                                         >
                                             <PlusSmallIcon className="w-4 h-4" />
                                         </button>
                                     </div>
 
-                                    {/* Subtotal por producto (Desktop) */}
-                                    <span className="hidden sm:block text-sm text-gray-400">
-                                        Total: ${(product.price * product.quantity).toFixed(2)}
+                                    <span className="hidden sm:block text-sm font-medium text-gray-400 dark:text-slate-500">
+                                        Total: <span className="text-gray-900 dark:text-slate-300">${(product.price * product.quantity).toFixed(2)}</span>
                                     </span>
                                 </div>
                             </div>
@@ -126,44 +99,50 @@ export const CartPage = () => {
 
                 {/* Resumen de Compra */}
                 <div className="lg:col-span-1">
-                    <div className="bg-gray-50/50 backdrop-blur-sm rounded-3xl p-6 sticky top-24 border border-gray-100">
-                        <h2 className="text-xl font-bold text-gray-900 mb-6">Resumen</h2>
+                    <div className="bg-gray-50/50 dark:bg-slate-900 backdrop-blur-sm rounded-[2rem] p-8 sticky top-24 border border-gray-100 dark:border-slate-800 transition-colors">
+                        <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-6 italic">Resumen</h2>
 
                         <div className="space-y-4 mb-6">
-                            <div className="flex justify-between text-gray-600">
-                                <span>Subtotal</span>
-                                <span className="font-medium text-gray-900">${getTotalPrice()}</span>
+                            <div className="flex justify-between text-gray-600 dark:text-slate-400">
+                                <span className="font-medium">Subtotal</span>
+                                <span className="font-bold text-gray-900 dark:text-white">${getTotalPrice()}</span>
                             </div>
-                            <div className="flex justify-between text-gray-600">
-                                <span>Envío estimado</span>
-                                <span className="text-green-600 font-medium">Gratis</span>
+                            <div className="flex justify-between text-gray-600 dark:text-slate-400">
+                                <span className="font-medium">Envío estimado</span>
+                                <span className="text-green-600 dark:text-green-400 font-bold uppercase text-xs tracking-widest flex items-center">
+                                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2 animate-pulse" />
+                                    Gratis
+                                </span>
                             </div>
-                            <div className="flex justify-between text-gray-600">
-                                <span>Impuestos</span>
-                                <span className="font-medium text-gray-900">$0.00</span>
+                            <div className="flex justify-between text-gray-600 dark:text-slate-400">
+                                <span className="font-medium">Impuestos</span>
+                                <span className="font-bold text-gray-900 dark:text-white">$0.00</span>
                             </div>
-                            <div className="h-px bg-gray-200 my-4" />
-                            <div className="flex justify-between text-xl font-black text-gray-900">
-                                <span>Total</span>
-                                <span>${getTotalPrice()}</span>
+                            <div className="h-px bg-gray-200 dark:bg-slate-800 my-4" />
+                            <div className="flex justify-between items-end">
+                                <span className="text-gray-900 dark:text-white font-bold">Total</span>
+                                <div className="text-right">
+                                    <span className="block text-3xl font-black text-blue-600 dark:text-blue-400 leading-none">
+                                        ${getTotalPrice()}
+                                    </span>
+                                    <span className="text-[10px] text-gray-400 uppercase tracking-tighter">IVA Incluido</span>
+                                </div>
                             </div>
                         </div>
 
-                        <button className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 hover:shadow-blue-300 transition-all active:scale-[0.98]">
+                        <button className="w-full bg-blue-600 dark:bg-blue-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-blue-200 dark:shadow-none hover:bg-blue-700 dark:hover:bg-blue-500 transition-all active:scale-[0.98] uppercase tracking-wider text-sm">
                             Finalizar Compra
                         </button>
 
-                        <div className="mt-6 space-y-3">
-                            <p className="flex items-center justify-center gap-2 text-xs text-gray-400">
-                                <span className="w-2 h-2 bg-green-500 rounded-full" />
-                                Stock disponible para envío inmediato
-                            </p>
-                            <div className="flex justify-center gap-4 opacity-30 grayscale">
-                                {/* Aquí podrías poner mini iconos de tarjetas de crédito */}
-                                <div className="w-8 h-5 bg-gray-400 rounded" />
-                                <div className="w-8 h-5 bg-gray-400 rounded" />
-                                <div className="w-8 h-5 bg-gray-400 rounded" />
+                        <div className="mt-8 space-y-4">
+                            <div className="flex flex-wrap justify-center gap-4 opacity-40 dark:opacity-20 grayscale">
+                                <div className="w-10 h-6 bg-gray-400 dark:bg-slate-600 rounded" />
+                                <div className="w-10 h-6 bg-gray-400 dark:bg-slate-600 rounded" />
+                                <div className="w-10 h-6 bg-gray-400 dark:bg-slate-600 rounded" />
                             </div>
+                            <p className="text-center text-[10px] text-gray-400 dark:text-slate-600 font-bold uppercase tracking-widest">
+                                Pago Seguro SSL • 256-bit Encryption
+                            </p>
                         </div>
                     </div>
                 </div>

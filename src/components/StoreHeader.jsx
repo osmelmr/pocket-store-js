@@ -185,9 +185,7 @@ export const StoreHeader = () => {
                                                 <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{user.name}</p>
                                                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
                                             </div>
-                                            <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700/50" onClick={() => setIsProfileOpen(false)}>
-                                                Mi Perfil
-                                            </Link>
+
                                             <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 border-t border-gray-100 dark:border-slate-700">
                                                 <div className="flex items-center">
                                                     <ArrowLeftOnRectangleIcon className="w-4 h-4 mr-2" />
