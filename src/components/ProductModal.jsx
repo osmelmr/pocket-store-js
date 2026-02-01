@@ -2,9 +2,18 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../zustand/useCart';
 import { TrashIcon, XMarkIcon, StarIcon, PlusIcon, MinusIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { useEffect } from 'react';
 
 export const ProductModal = ({ isOpen, onClose, product: p }) => {
     const { quantityP, lessFromCart, addToCart } = useCart();
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => { document.body.style.overflow = 'unset'; };
+    }, [isOpen]);
 
     if (!p) return null;
 

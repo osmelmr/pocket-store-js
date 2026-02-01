@@ -87,7 +87,7 @@ export const ProductCart = ({ product, quantityP, addToCart, lessFromCart, openP
                             </button>
 
                             {/* Cantidad */}
-                            <div className="px-4 min-w-[3rem] text-center">
+                            <div className="px-4 min-w-12 text-center">
                                 <span className="text-sm font-bold text-gray-800 dark:text-gray-200">
                                     {quantityP(p.id)}
                                 </span>
