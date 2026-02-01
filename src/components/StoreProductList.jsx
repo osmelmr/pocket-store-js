@@ -5,11 +5,16 @@ import { useCart } from "../zustand/useCart"
 import { useProductFilters } from "../hooks/useProductFilters"
 import { ProductCart } from "./ProductCart"
 import { ProductModal } from "./ProductModal"
+import { useAllCategories } from "../hooks/useCategories"
 
 export const StoreProductList = () => {
     const { quantityP, lessFromCart, addToCart } = useCart()
     const setProducts = useUiProducts(state => state.setProducts)
     const { data, isLoading } = useAllProducts()
+
+    const { data: categories, isLoading: loadingCategories } = useAllCategories()
+
+    const addCategories = useUiProducts(state => state.addCategories)
 
     const [modalProducts, setModalProducts] = useState(false)
     const [productModal, setProductModal] = useState(null)
@@ -24,6 +29,12 @@ export const StoreProductList = () => {
         if (data) setProducts(data)
 
     }, [data, setProducts])
+
+    useEffect(() => {
+        console.log(categories)
+        if (categories) addCategories(categories)
+
+    }, [categories, addCategories])
 
     const { newProducts: products } = useProductFilters()
 

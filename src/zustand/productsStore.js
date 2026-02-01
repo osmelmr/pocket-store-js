@@ -8,6 +8,17 @@ export const useUiProducts = create((set, get) => ({
         if (!item) return 0
         return item.stock
     },
+
+    addCategories: (categories) => {
+        set(state => {
+            const enriched = state.products.map(p => {
+                const cat = categories.find(c => c.id === p.category)
+                return { ...p, category_name: cat ? cat.name : "Sin categoría" }
+            })
+            return { products: enriched }
+        })
+    },
+
     lessStockByOne: (id) => {
         const item = get().products.find(p => p.id == id)
         if (!item.stock || item.stock === 0) {
