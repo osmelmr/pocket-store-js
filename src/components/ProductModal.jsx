@@ -11,7 +11,8 @@ export const ProductModal = ({ isOpen, onClose, product: p }) => {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                // Cambia esto en tu div principal de fondo
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 min-h-dvh">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -24,7 +25,7 @@ export const ProductModal = ({ isOpen, onClose, product: p }) => {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        className="relative w-full max-w-[340px] sm:max-w-2xl bg-white dark:bg-gray-900 rounded-[2rem] shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800"
+                        className="relative w-full max-w-85 sm:max-w-2xl bg-white dark:bg-gray-900 rounded-4xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800"
                     >
                         {/* Botón Cerrar más pequeño en móvil */}
                         <button
@@ -82,7 +83,7 @@ export const ProductModal = ({ isOpen, onClose, product: p }) => {
                                             onClick={() => addToCart(p.id)}
                                             className="w-full py-3 sm:py-4 bg-gray-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 disabled:bg-gray-100 dark:disabled:bg-gray-800 text-white rounded-xl sm:rounded-2xl font-bold flex items-center justify-center gap-2 text-sm sm:text-base transition-all active:scale-[0.97]"
                                         >
-                                            <ShoppingCartIcon className="w-4 h-4 sm:w-5 h-5" />
+                                            <ShoppingCartIcon className="w-4 h-4 sm:w-5" />
                                             <span>{p.stock ? 'Añadir' : 'Agotado'}</span>
                                         </button>
                                     ) : (
