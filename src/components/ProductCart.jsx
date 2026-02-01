@@ -1,10 +1,11 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 
-export const ProductCart = ({ product, quantityP, addToCart, lessFromCart }) => {
+export const ProductCart = ({ product, quantityP, addToCart, lessFromCart, openProductModal }) => {
     const p = product;
 
     return (
-        <div className="bg-white dark:bg-slate-800 rounded-lg overflow-hidden border border-gray-100 dark:border-slate-700 shadow-md hover:shadow-lg dark:hover:border-slate-600 transition-all">
+        <div className="bg-white dark:bg-slate-800 rounded-lg overflow-hidden border border-gray-100 dark:border-slate-700 shadow-md hover:shadow-lg dark:hover:border-slate-600 transition-all"
+            onClick={() => openProductModal(p)}>
             <div className="relative h-48 bg-gray-100 dark:bg-slate-900">
                 <img
                     src={p.image ? p.image : "https://placehold.co/300x300"}
@@ -102,6 +103,6 @@ export const ProductCart = ({ product, quantityP, addToCart, lessFromCart }) => 
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };

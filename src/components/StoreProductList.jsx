@@ -1,14 +1,24 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAllProducts } from "../hooks/useProducts"
 import { useUiProducts } from "../zustand/productsStore"
 import { useCart } from "../zustand/useCart"
 import { useProductFilters } from "../hooks/useProductFilters"
 import { ProductCart } from "./ProductCart"
+import { ProductModal } from "./ProductModal"
 
 export const StoreProductList = () => {
     const { quantityP, lessFromCart, addToCart } = useCart()
     const setProducts = useUiProducts(state => state.setProducts)
     const { data, isLoading } = useAllProducts()
+
+    const [modalProducts, setModalProducts] = useState(false)
+    const [productModal, setProductModal] = useState(null)
+
+    const openProductModal = (p) => {
+        console.log(p)
+        setProductModal(p)
+        setModalProducts(true)
+    }
 
     useEffect(() => {
         if (data) setProducts(data)
@@ -36,7 +46,7 @@ export const StoreProductList = () => {
                     12 productos disponibles
                 </p>
             </div>
-
+            <ProductModal isOpen={modalProducts} onClose={() => setModalProducts(false)} product={productModal} />
             {/* Grid de productos */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {products && products.map(p => (
@@ -46,6 +56,7 @@ export const StoreProductList = () => {
                         quantityP={quantityP}
                         addToCart={addToCart}
                         lessFromCart={lessFromCart}
+                        openProductModal={openProductModal}
                     />
                 ))}
             </div>
