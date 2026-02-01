@@ -11,6 +11,7 @@ import { StoreLayout } from "./layouts/StoreLayout.jsx"
 import { StoreProductList } from "./components/StoreProductList.jsx";
 import { CartPage } from "./pages/CartPage.jsx";
 import { Register } from "./pages/Register.jsx";
+import { Protector } from "./components/Protector.jsx"
 
 export const router = createBrowserRouter([
     {
@@ -43,27 +44,31 @@ export const router = createBrowserRouter([
         path: "register",
         element: <Register />,
     },
-
     {
-        path: "admin",
-        element: <AdminLayout />,
-        children: [
-            {
-                path: "",
-                element: <AdminDashboard />,
-            },
-            {
-                path: "products",
-                element: <ProductList />,
-            },
-            {
-                path: "products/create",
-                element: <ProductCreate />,
-            },
-            {
-                path: "products/:id/edit",
-                element: <ProductEdit />,
-            },
-        ],
-    },
+        path: "",
+        element: <Protector />,
+        children:
+            [{
+                path: "admin",
+                element: <AdminLayout />,
+                children: [
+                    {
+                        path: "",
+                        element: <AdminDashboard />,
+                    },
+                    {
+                        path: "products",
+                        element: <ProductList />,
+                    },
+                    {
+                        path: "products/create",
+                        element: <ProductCreate />,
+                    },
+                    {
+                        path: "products/:id/edit",
+                        element: <ProductEdit />,
+                    },
+                ],
+            },]
+    }
 ]);

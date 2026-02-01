@@ -116,7 +116,7 @@ export const StoreHeader = () => {
                             <ShoppingBagIcon className="w-6 h-6 text-white" />
                         </div>
                         <span className="font-bold text-lg text-gray-900 dark:text-white">
-                            Mi<span className="text-blue-600">Store</span>
+                            Mi<span className="text-blue-600 ">Store</span>
                         </span>
                     </Link>
 
@@ -128,7 +128,7 @@ export const StoreHeader = () => {
                     {/* Acciones */}
                     <div className="flex items-center gap-2 md:gap-4">
                         <div className="flex items-center justify-center md:w-24">
-                            <Link to="/admin" className="hidden sm:block text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-colors">
+                            <Link to="/admin" className="hidden sm:block text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-colors mx-2">
                                 Admin
                             </Link>
 
@@ -146,7 +146,7 @@ export const StoreHeader = () => {
                                                 hideFilters(); setOpenFilters(true); setCloserFilters(false); setIsManuallyOpenedOnMobile(false);
                                             }
                                         }}
-                                        className={`p-2 rounded-full transition-colors flex items-center gap-1 ${openFilters
+                                        className={`p-2 rounded-full transition-colors flex items-center gap-1 mr-2 ${openFilters
                                             ? "text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800"
                                             : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800"
                                             }`}

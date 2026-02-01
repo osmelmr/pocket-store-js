@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 // import { authServices } from "../services/authServices"
-import { signIn, signUp } from "../services/supabase/auth"
+import { signIn, signOut, signUp } from "../services/supabase/auth"
 // import { getProfile } from "../services/supabase/profile"
 import { AuthContext } from "./context"
-
+import { isAuth as isAuthService } from "../services/supabase/auth"
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
@@ -52,14 +52,33 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const logOut = () => {
-        localStorage.removeItem("user")
-        setUser(null)
+    const logOut = async () => {
+        try {
+            await signOut()
+            localStorage.removeItem("user")
+            setUser(null)
+        } catch {
+            localStorage.removeItem("user")
+            setUser(null)
+        }
 
     }
 
+    const isAuth = async () => {
+        const auth = await isAuthService()
+        if (!auth) {
+            setUser(null)
+            localStorage.removeItem("user")
+            return false
+        }
+        console.log(auth)
+        setUser(auth.user)
+        localStorage.setItem("user", JSON.stringify(auth.user))
+        return true
+    }
+
     return (
-        <AuthContext.Provider value={{ user, login, logOut, register }}>
+        <AuthContext.Provider value={{ user, login, logOut, register, isAuth }}>
             {children}
         </AuthContext.Provider>
     )
