@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { AnimatePresence, motion } from "framer-motion"
-import { SearchFilter } from "./SearchFilter";
-import { CategoryFilter } from "./CategoryFilter";
-import { OrderFilter } from "./OrderFilter";
+import { SearchFilter } from "../SearchFilter";
+import { CategoryFilter } from "../CategoryFilter";
+import { OrderFilter } from "../OrderFilter";
 
 export const HeaderFilters = ({ isFiltersVisible }) => {
 

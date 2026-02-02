@@ -1,10 +1,10 @@
-import { useProductFilters } from "../hooks/useProductFilters";
-import { StoreProductList } from '../components/StoreProductList';
-import { StoreHeader } from '../components/StoreHeader';
-import { StoreFooter } from '../components/StoreFooter';
-import { CategoryFilter } from "../components/CategoryFilter";
-import { OrderFilter } from "../components/OrderFilter";
-import { useAllProducts } from "../hooks/useProducts"
+import { useProductFilters } from "../../hooks/useProductFilters";
+import { StoreProductList } from '../../components/store/StoreProductList';
+import { StoreHeader } from '../../components/store/StoreHeader';
+import { StoreFooter } from '../../components/store/StoreFooter';
+import { CategoryFilter } from "../../components/CategoryFilter";
+import { OrderFilter } from "../../components/OrderFilter";
+import { useAllProducts } from "../../hooks/useProducts"
 
 export const Store = () => {
 

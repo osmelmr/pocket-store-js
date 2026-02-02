@@ -6,7 +6,7 @@ import {
     ArrowLeftIcon,
     ShoppingBagIcon
 } from "@heroicons/react/24/outline";
-import { useCart } from "../zustand/useCart";
+import { useCart } from "../../zustand/useCart";
 
 export const CartPage = () => {
     const { cart, addToCart, lessFromCart, removeFromCart: remove } = useCart();

@@ -1,9 +1,9 @@
-import { StoreHeader } from "../components/StoreHeader"
-import { StoreFooter } from "../components/StoreFooter"
+import { StoreHeader } from "../components/store/StoreHeader"
+import { StoreFooter } from "../components/store/StoreFooter"
 import { Outlet } from "react-router"
-import { StoreSidebar } from "../components/StoreSidebar"
+import { StoreSidebar } from "../components/store/StoreSidebar"
 import { useSidebar } from "../zustand/useSidebar"
-import { HeaderFilters } from "../components/HeaderFilters"
+import { HeaderFilters } from "../components/store/HeaderFilters"
 import { useVisibleFilters } from "../zustand/useVisibleFilers"
 
 export const StoreLayout = () => {

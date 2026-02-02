@@ -1,5 +1,5 @@
 import { Link } from "react-router"
-import { initialProducts } from "../mocks/mocks";
+import { initialProducts } from "../../mocks/mocks";
 
 export const AdminDashboard = () => {
 

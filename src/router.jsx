@@ -1,15 +1,14 @@
 import { createBrowserRouter } from "react-router"
-import { Store } from "./pages/Store.jsx"
 import { Login } from "./pages/Login.jsx";
-import { AdminDashboard } from "./pages/AdminDashboard.jsx";
-import { ProductList } from "./pages/ProductList.jsx"
-import { ProductCreate } from "./pages/ProductCreate.jsx"
-import { ProductEdit } from "./pages/ProductEdit.jsx"
+import { AdminDashboard } from "./pages/admin/AdminDashboard.jsx";
+import { ProductList } from "./pages/admin/ProductList.jsx"
+import { ProductCreate } from "./pages/admin/ProductCreate.jsx"
+import { ProductEdit } from "./pages/admin/ProductEdit.jsx"
 import { AdminLayout } from "./layouts/AdminLayout.jsx"
 import { Tests } from "./pages/Tests.jsx"
 import { StoreLayout } from "./layouts/StoreLayout.jsx"
-import { StoreProductList } from "./components/StoreProductList.jsx";
-import { CartPage } from "./pages/CartPage.jsx";
+import { StoreProductList } from "./components/store/StoreProductList.jsx";
+import { CartPage } from "./pages/store/CartPage.jsx";
 import { Register } from "./pages/Register.jsx";
 import { Protector } from "./components/Protector.jsx"
 
@@ -31,10 +30,6 @@ export const router = createBrowserRouter([
     {
         path: "tests",
         element: <Tests />,
-    },
-    {
-        path: "store2",
-        element: <Store />,
     },
     {
         path: "login",

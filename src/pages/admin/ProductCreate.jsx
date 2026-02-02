@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useCreateProduct } from "../hooks/useProducts";
-import { useCategories } from "../hooks/useCategories";
+import { useCreateProduct } from "../../hooks/useProducts";
+import { useCategories } from "../../hooks/useCategories";
 import { useNavigate } from "react-router";
-import { useToast } from "../zustand/useToast";
+import { useToast } from "../../zustand/useToast";
 
 const schema = z.object({
   name: z

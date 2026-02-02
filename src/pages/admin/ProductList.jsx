@@ -1,14 +1,14 @@
 import { Link } from "react-router";
 // import { initialProducts } from "../mocks/mocks";
-import { useProductFilters } from "../hooks/useProductFilters";
-import { SearchFilter } from "../components/SearchFilter";
-import { CategoryFilter } from "../components/CategoryFilter";
-import { OrderFilter } from "../components/OrderFilter";
-import { ConfirmModal } from "../components/ConfirmModal";
+import { useProductFilters } from "../../hooks/useProductFilters";
+import { SearchFilter } from "../../components/SearchFilter";
+import { CategoryFilter } from "../../components/CategoryFilter";
+import { OrderFilter } from "../../components/OrderFilter";
+import { ConfirmModal } from "../../components/admin/ConfirmModal";
 import { useEffect, useState } from "react"
-import { useProducts, useDeleteProduct } from "../hooks/useProducts"
-import { useToast } from "../zustand/useToast";
-import { useUiProducts } from "../zustand/productsStore";
+import { useProducts, useDeleteProduct } from "../../hooks/useProducts"
+import { useToast } from "../../zustand/useToast";
+import { useUiProducts } from "../../zustand/productsStore";
 
 export const ProductList = () => {
   // const products = initialProducts

@@ -1,14 +1,14 @@
 ﻿/* eslint-disable no-unused-vars */
-import { useCart } from "../zustand/useCart";
+import { useCart } from "../../zustand/useCart";
 import { Link, useNavigate } from "react-router";
-import { useAuthContext } from "../hooks/useAuth";
-import { SearchFilter } from "./SearchFilter";
+import { useAuthContext } from "../../hooks/useAuth";
+import { SearchFilter } from "../SearchFilter";
 import { useState, useRef, useEffect } from "react";
-import { CategoryFilter } from "./CategoryFilter";
-import { OrderFilter } from "./OrderFilter";
+import { CategoryFilter } from "../CategoryFilter";
+import { OrderFilter } from "../OrderFilter";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { HeaderFilters } from "./HeaderFilters";
-import { useVisibleFilters } from "../zustand/useVisibleFilers";
+import { useVisibleFilters } from "../../zustand/useVisibleFilers";
 
 import {
     ShoppingBagIcon,
@@ -18,7 +18,7 @@ import {
     Bars3Icon,
     XMarkIcon
 } from "@heroicons/react/24/outline";
-import { useSidebar } from "../zustand/useSidebar";
+import { useSidebar } from "../../zustand/useSidebar";
 
 export const StoreHeader = () => {
     const navigate = useNavigate();

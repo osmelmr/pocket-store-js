@@ -3,9 +3,9 @@ import { useParams, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useProduct, useUpdateProduct } from "../hooks/useProducts";
-import { useCategories } from "../hooks/useCategories";
-import { useToast } from "../zustand/useToast";
+import { useProduct, useUpdateProduct } from "../../hooks/useProducts";
+import { useCategories } from "../../hooks/useCategories";
+import { useToast } from "../../zustand/useToast";
 
 // Esquema de validación
 const productSchema = z.object({

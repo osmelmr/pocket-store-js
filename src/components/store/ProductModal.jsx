@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { motion, AnimatePresence } from 'framer-motion';
-import { useCart } from '../zustand/useCart';
+import { useCart } from '../../zustand/useCart';
 import { TrashIcon, XMarkIcon, StarIcon, PlusIcon, MinusIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useEffect } from 'react';
 

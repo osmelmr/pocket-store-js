@@ -1,13 +1,24 @@
 import { useEffect, useState } from "react"
-import { useAllProducts } from "../hooks/useProducts"
-import { useUiProducts } from "../zustand/productsStore"
-import { useCart } from "../zustand/useCart"
-import { useProductFilters } from "../hooks/useProductFilters"
+import { useAllProducts } from "../../hooks/useProducts"
+import { useUiProducts } from "../../zustand/productsStore"
+import { useCart } from "../../zustand/useCart"
+import { useProductFilters } from "../../hooks/useProductFilters"
 import { ProductCart } from "./ProductCart"
 import { ProductModal } from "./ProductModal"
-import { useAllCategories } from "../hooks/useCategories"
+import { useAllCategories } from "../../hooks/useCategories"
+import { useFilters } from '../../zustand/productsStore'
 
 export const StoreProductList = () => {
+    const { setCategory, setOrder, setSearch } = useFilters()
+
+    useEffect(() => {
+        return () => {
+            setCategory('')
+            setOrder('')
+            setSearch('')
+        }
+    }, [])
+
     const { quantityP, lessFromCart, addToCart } = useCart()
     const setProducts = useUiProducts(state => state.setProducts)
     const { data, isLoading } = useAllProducts()
