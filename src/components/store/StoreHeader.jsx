@@ -9,6 +9,7 @@ import { OrderFilter } from "../OrderFilter";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { HeaderFilters } from "./HeaderFilters";
 import { useVisibleFilters } from "../../zustand/useVisibleFilers";
+import { useTemeMode } from "../../zustand/useDarkMode";
 
 import {
     ShoppingBagIcon,
@@ -16,7 +17,8 @@ import {
     AdjustmentsHorizontalIcon, // Icono de filtros
     ArrowLeftOnRectangleIcon,
     Bars3Icon,
-    XMarkIcon
+    XMarkIcon,
+    SunIcon
 } from "@heroicons/react/24/outline";
 import { useSidebar } from "../../zustand/useSidebar";
 
@@ -38,6 +40,7 @@ export const StoreHeader = () => {
     const [openFilters, setOpenFilters] = useState(false);
     const [isManuallyOpenedOnMobile, setIsManuallyOpenedOnMobile] = useState(false);
 
+    const { toggleDarkMode } = useTemeMode();
 
     const { scrollY } = useScroll();
     useEffect(() => {
@@ -124,7 +127,9 @@ export const StoreHeader = () => {
                     <div className="hidden sm:block flex-1 max-w-lg mx-8">
                         <SearchFilter />
                     </div>
-
+                    <button className="flex p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" onClick={toggleDarkMode}>
+                        <SunIcon className="w-6 h-6 text-yellow-400" />
+                    </button>
                     {/* Acciones */}
                     <div className="flex items-center gap-2 md:gap-4">
                         <div className="flex items-center justify-center md:w-24">
