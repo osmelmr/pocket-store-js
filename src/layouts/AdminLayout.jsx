@@ -8,22 +8,15 @@ export const AdminLayout = () => {
 
     return (
         <div className={`min-h-screen bg-gray-100 `}>
-
-
-            {/* Main Content */}
-
-            {/* Top Bar */}
             <AdminHeader isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
             <div className={`${isSidebarOpen && "mr-64"} h-full transition-all duration-300`}>
                 {/* Page Content */}
-                <main className="p-6">
+                <main className="">
                     <Outlet />
                 </main>
                 {/* Sidebar */}
                 <AdminSidebar isSidebarOpen={isSidebarOpen} />
             </div>
-
-
         </div>
     );
 };
