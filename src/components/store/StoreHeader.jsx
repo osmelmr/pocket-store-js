@@ -11,6 +11,8 @@ import { HeaderFilters } from "./HeaderFilters";
 import { useVisibleFilters } from "../../zustand/useVisibleFilers";
 import { useTemeMode } from "../../zustand/useDarkMode";
 
+import { IoToggle } from "react-icons/io5";
+
 import {
     ShoppingBagIcon,
     ShoppingCartIcon,
@@ -21,6 +23,7 @@ import {
     SunIcon
 } from "@heroicons/react/24/outline";
 import { useSidebar } from "../../zustand/useSidebar";
+import { TemeChange, TemeChange2 } from "../TemeChange";
 
 export const StoreHeader = () => {
     const navigate = useNavigate();
@@ -43,6 +46,7 @@ export const StoreHeader = () => {
     const { toggleDarkMode } = useTemeMode();
 
     const { scrollY } = useScroll();
+
     useEffect(() => {
         // Resetear el estado cuando se abre el sidebar (móvil)
         if (!isSidebarOpen && closerFilters) {
@@ -53,6 +57,7 @@ export const StoreHeader = () => {
         }
 
     }, [isSidebarOpen]);
+
     useMotionValueEvent(scrollY, "change", (latest) => {
         // No aplicar scroll automático si los filtros fueron abiertos manualmente en móvil
         if (isManuallyOpenedOnMobile) {
@@ -107,74 +112,76 @@ export const StoreHeader = () => {
 
     return (
         <header className={`sticky top-0 z-50 h-20 transition-all duration-300 
-    ${!isFiltersVisible ? "shadow-sm" : ""} 
-    bg-white/80 backdrop-blur-md dark:backdrop-blur-none dark:bg-slate-900 dark:border-b dark:border-slate-800`}>
+            ${!isFiltersVisible ? "shadow-sm" : ""} 
+            bg-white/80 backdrop-blur-md dark:backdrop-blur-none 
+            dark:bg-slate-900 dark:border-b dark:border-slate-800`}
+        >
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
+            <div className=" sm:px-6 lg:px-8 relative z-20">
                 <div className="flex justify-between items-center h-20">
 
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-2 group shrink-0">
-                        <div className="inline-flex items-center justify-center w-10 h-10 bg-blue-600 rounded-xl shadow-lg">
-                            <ShoppingBagIcon className="w-6 h-6 text-white" />
-                        </div>
-                        <span className="font-bold text-lg text-gray-900 dark:text-white">
-                            Mi<span className="text-blue-600 ">Store</span>
-                        </span>
-                    </Link>
+                    <div className="flex flex-none pl-2">
+                        <Link to="/" className="flex flex-none items-center gap-2 group shrink-0">
+                            <div className="inline-flex items-center justify-center w-10 h-10 bg-blue-600 rounded-xl shadow-lg">
+                                <ShoppingBagIcon className="w-6 h-6 text-white" />
+                            </div>
+                            <span className="font-bold text-lg text-gray-900 dark:text-white hidden sm:block">
+                                Mi<span className="text-blue-600 ">Store</span>
+                            </span>
+                        </Link>
+                    </div>
 
                     {/* Search - Desktop */}
                     <div className="hidden sm:block flex-1 max-w-lg mx-8">
                         <SearchFilter />
                     </div>
-                    <button className="flex p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" onClick={toggleDarkMode}>
-                        <SunIcon className="w-6 h-6 text-yellow-400" />
-                    </button>
-                    {/* Acciones */}
-                    <div className="flex items-center gap-2 md:gap-4">
-                        <div className="flex items-center justify-center md:w-24">
-                            <Link to="/admin" className="hidden sm:block text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-colors mx-2">
-                                Admin
-                            </Link>
 
-                            {/* Filtros Toggle */}
-                            <AnimatePresence>
-                                {(openFilters || closerFilters) && !isSidebarOpen && (
-                                    <motion.button
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        onClick={() => {
-                                            if (openFilters) {
-                                                showFilters(); setCloserFilters(true); setOpenFilters(false); setIsManuallyOpenedOnMobile(true);
-                                            } else {
-                                                hideFilters(); setOpenFilters(true); setCloserFilters(false); setIsManuallyOpenedOnMobile(false);
-                                            }
-                                        }}
-                                        className={`p-2 rounded-full transition-colors flex items-center gap-1 mr-2 ${openFilters
-                                            ? "text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800"
-                                            : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800"
-                                            }`}
-                                    >
-                                        <AdjustmentsHorizontalIcon className="w-6 h-6" />
-                                        <span className="hidden md:block text-xs font-bold uppercase tracking-wider">Filtros</span>
-                                    </motion.button>
-                                )}
-                            </AnimatePresence>
-                        </div>
+                    {/* Acciones */}
+                    <div className="flex flex-none items-center gap-2 md:gap-4">
+
+                        {/* Filtros Toggle */}
+                        {(openFilters || closerFilters) && !isSidebarOpen && (
+                            <div
+
+                                onClick={() => {
+                                    if (openFilters) {
+                                        showFilters(); setCloserFilters(true); setOpenFilters(false); setIsManuallyOpenedOnMobile(true);
+                                    } else {
+                                        hideFilters(); setOpenFilters(true); setCloserFilters(false); setIsManuallyOpenedOnMobile(false);
+                                    }
+                                }}
+                                className={`p-2 rounded-full transition-colors flex items-center gap-1 ${openFilters
+                                    ? "text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800"
+                                    : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800"
+                                    }`}
+                            >
+                                <AdjustmentsHorizontalIcon className="w-6 h-6" />
+                                <span className="hidden md:block text-xs font-bold uppercase tracking-wider">Filtros</span>
+                            </div>
+                        )}
+
+                        <button className=" flex rounded-full " onClick={toggleDarkMode}>
+                            {/* <IoToggle className="dark:text-white text-2xl dark:rotate-180 text-slate-800 " /> */}
+                            <TemeChange2 />
+                        </button>
+
+                        <Link to="/admin" className="hidden sm:block text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-colors ">
+                            Admin
+                        </Link>
 
                         {/* Cart */}
                         <Link to="/cart" className="relative p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-all">
                             <ShoppingCartIcon className="w-6 h-6" />
                             {allStock() > 0 && (
-                                <span className="absolute top-1 right-1 bg-blue-600 dark:bg-blue-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center dark:border-2 dark:border-slate-900">
+                                <span className="absolute top-1 right-1 bg-red-600 dark:bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center dark:border-2 dark:border-slate-900">
                                     {allStock()}
                                 </span>
                             )}
                         </Link>
 
                         {/* User Profile */}
-                        <div className="relative" ref={profileRef}>
+                        <div className="relative flex shrink-0" ref={profileRef}>
                             {user ? (
                                 <>
                                     <button onClick={() => setIsProfileOpen(!isProfileOpen)} className="flex items-center p-1 outline-none">

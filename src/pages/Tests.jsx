@@ -1,18 +1,19 @@
 import { useState } from "react";
+import { TemeChange } from "../components/TemeChange";
 
 export const Tests = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <button
+      {/*<button
         onClick={() => setIsOpen(true)}
         className="fixed top-4 left-4 z-50 p-2 bg-blue-500 text-white rounded"
       >
         ☰
       </button>
 
-      {/* Overlay */}
+     
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
@@ -20,7 +21,7 @@ export const Tests = () => {
         />
       )}
 
-      {/* Sidebar */}
+      
       <div
         className={`fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
@@ -57,6 +58,9 @@ export const Tests = () => {
           </nav>
         </div>
       </div>
+      */
+      }
+      <TemeChange />
     </>
   );
 };
