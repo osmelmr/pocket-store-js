@@ -126,7 +126,7 @@ export const StoreHeader = () => {
                             <div className="inline-flex items-center justify-center w-10 h-10 bg-blue-600 rounded-xl shadow-lg">
                                 <ShoppingBagIcon className="w-6 h-6 text-white" />
                             </div>
-                            <span className="font-bold text-lg text-gray-900 dark:text-white hidden sm:block">
+                            <span className="font-bold text-sm sm:text-lg text-gray-900 dark:text-white ">
                                 Mi<span className="text-blue-600 ">Store</span>
                             </span>
                         </Link>
