@@ -21,7 +21,7 @@ export const ProductEdit = () => {
   const { id } = useParams();
   const { showToast } = useToast();
 
-  const { data: product, isLoading, error } = useProduct(id);
+  const { data: product, isLoading } = useProduct(id);
   const { data: categories, isLoading: categoriesLoading } = useCategories();
   const { mutate: updateProduct, isLoading: isUpdating } = useUpdateProduct();
 

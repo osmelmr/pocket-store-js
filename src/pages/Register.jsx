@@ -17,7 +17,7 @@ const registerSchema = z.object({
     path: ["confirmPassword"],
 });
 
-// 2. COMPONENTE REUTILIZABLE
+// eslint-disable-next-line no-unused-vars
 const InputField = ({ label, name, type, icon: Icon, placeholder, register, errors }) => (
     <div className="space-y-1">
         <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 italic">{label}</label>
@@ -44,7 +44,7 @@ const InputField = ({ label, name, type, icon: Icon, placeholder, register, erro
     </div>
 );
 
-// 3. COMPONENTE PRINCIPAL
+// 3. Component principal
 export const Register = () => {
     const { showToast } = useToast();
     const navigate = useNavigate();
@@ -73,7 +73,7 @@ export const Register = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-slate-50 to-gray-100 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 flex items-center justify-center p-4 transition-colors duration-300">
+        <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-blue-100 via-slate-50 to-gray-100 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 flex items-center justify-center p-4 transition-colors duration-300">
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-blue-200/50 dark:shadow-none mb-4 transform -rotate-6 transition-transform hover:rotate-0 border border-transparent dark:border-slate-700">
@@ -82,7 +82,7 @@ export const Register = () => {
                     <h2 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight italic">Únete</h2>
                 </div>
 
-                <div className="bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl p-8 rounded-[2rem] shadow-2xl border border-white dark:border-slate-800 transition-colors">
+                <div className="bg-white/80 dark:bg-slate-900/90 backdrop-blur-xl p-8 rounded-4xl shadow-2xl border border-white dark:border-slate-800 transition-colors">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
 
                         <InputField

@@ -63,7 +63,7 @@ export const ProductCreate = () => {
       reset();
       navigate('/admin/products');
     } catch (error) {
-      showToast(`Error al crear el producto`, 'error');
+      showToast(`Error al crear el producto`, error);
     }
   };
 
