@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const AdminSidebar = ({ isSidebarOpen }) => {
     return (
-        <div className={`fixed top-20 h-full right-0 w-64 bg-gray-800 text-white ${isSidebarOpen ? "translate-x-0" : "translate-x-full"} transition-transform duration-300`}>
+        <div className={` fixed top-20 h-full right-0 w-64 bg-gray-800 text-white ${isSidebarOpen ? "translate-x-0" : "translate-x-full"} transition-transform duration-300`}>
             <div className="p-4 flex flex-col">
                 <div className="flex items-center justify-around mb-8">
                     <h1 className="text-2xl font-bold ">Admin Store</h1>

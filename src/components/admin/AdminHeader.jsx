@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { useCart } from "../../zustand/useCart";
 import { Link, useNavigate } from "react-router";
 import { useAuthContext } from "../../hooks/useAuth";
 import { SearchFilter } from "../SearchFilter";
@@ -9,7 +8,6 @@ import { useVisibleFilters } from "../../zustand/useVisibleFilers";
 
 import {
     ShoppingBagIcon,
-    ShoppingCartIcon,
     AdjustmentsHorizontalIcon, // Icono de filtros
     ArrowLeftOnRectangleIcon,
     Bars3Icon,
@@ -19,7 +17,6 @@ import { useSidebar } from "../../zustand/useSidebar";
 
 export const AdminHeader = ({ isSidebarOpen, setIsSidebarOpen }) => {
     const navigate = useNavigate();
-    const { allStock } = useCart();
     const { user, logOut } = useAuthContext();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -122,15 +119,7 @@ export const AdminHeader = ({ isSidebarOpen, setIsSidebarOpen }) => {
                             </AnimatePresence>
                         </div>
 
-                        {/* Cart */}
-                        <Link to="/cart" className="relative p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-all">
-                            <ShoppingCartIcon className="w-6 h-6" />
-                            {allStock() > 0 && (
-                                <span className="absolute top-1 right-1 bg-blue-600 dark:bg-blue-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center dark:border-2 dark:border-slate-900">
-                                    {allStock()}
-                                </span>
-                            )}
-                        </Link>
+
 
                         {/* User Profile */}
                         <div className="relative" ref={profileRef}>
@@ -169,9 +158,16 @@ export const AdminHeader = ({ isSidebarOpen, setIsSidebarOpen }) => {
                         {/* Mobile Menu Button */}
                         <button
                             onClick={() => { setIsSidebarOpen(!isSidebarOpen) }}
-                            className=" p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg"
+                            className=" hidden sm:block p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg"
                         >
                             {isSidebarOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
+                        </button>
+
+                        <button
+                            onClick={() => { setIsSidebarOpen(!isSidebarOpen) }}
+                            className=" sm:hidden p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg"
+                        >
+                            {!isSidebarOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
                         </button>
                     </div>
                 </div>

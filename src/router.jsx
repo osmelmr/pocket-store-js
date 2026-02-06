@@ -49,18 +49,14 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         path: "",
-                        element: <AdminDashboard />,
-                    },
-                    {
-                        path: "products",
                         element: <ProductList />,
                     },
                     {
-                        path: "products/create",
+                        path: "create",
                         element: <ProductCreate />,
                     },
                     {
-                        path: "products/:id/edit",
+                        path: ":id/edit",
                         element: <ProductEdit />,
                     },
                 ],
